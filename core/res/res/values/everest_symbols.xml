@@ -183,4 +183,7 @@
 
     <!-- Custom logo color -->
     <java-symbol type="color" name="logo_accent_color" />
+
+    <!-- Device hardware keys -->
+    <java-symbol type="integer" name="config_deviceHardwareWakeKeys" />
 </resources>
