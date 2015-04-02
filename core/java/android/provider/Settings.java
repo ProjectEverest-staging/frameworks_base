@@ -6725,6 +6725,13 @@ public final class Settings {
          */
         @Readable
         public static final String VOLUME_ROCKER_WAKE = "volume_rocker_wake";
+        
+        /**
+         * Whether to answer the call with the volume keys, the value is boolean.
+         * 0 = 0ff, 1 = on
+         * @hide
+         */
+        public static final String VOLUME_ANSWER_CALL = "volume_answer_call";
 
         /**
          * Whether to display power in the power menu
