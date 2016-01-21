@@ -77,9 +77,6 @@ public class GlobalActionsPowerDialog {
             int blurBehindRadius = context.getResources()
                     .getDimensionPixelSize(com.android.systemui.R.dimen.max_window_blur_radius);
             window.getAttributes().setBlurBehindRadius(blurBehindRadius);
-            window.setDimAmount(0.54f);
-        } else {
-            window.setDimAmount(0.88f);
         }
 
         return dialog;
