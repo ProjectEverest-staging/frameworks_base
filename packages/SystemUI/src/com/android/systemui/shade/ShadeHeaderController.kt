@@ -69,6 +69,7 @@ import com.android.systemui.statusbar.phone.StatusIconContainer
 import com.android.systemui.statusbar.phone.StatusOverlayHoverListenerFactory
 import com.android.systemui.statusbar.policy.Clock
 import com.android.systemui.statusbar.policy.ConfigurationController
+import com.android.systemui.statusbar.policy.NetworkTraffic
 import com.android.systemui.statusbar.policy.NextAlarmController
 import com.android.systemui.statusbar.policy.VariableDateView
 import com.android.systemui.statusbar.policy.VariableDateViewController
@@ -144,6 +145,7 @@ constructor(
         header.requireViewById(R.id.hover_system_icons_container)
     private val vibrator: Vibrator =
         header.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    private val networkTraffic: NetworkTraffic? = header.findViewById(R.id.networkTraffic)
 
     private var roundedCorners = 0
     private var cutout: DisplayCutout? = null
@@ -255,6 +257,7 @@ constructor(
                 header.updateAllConstraints(update)
                 privacyChipVisible = visible
                 setBatteryClickable(qsExpandedFraction == 1f || !visible)
+                setNetworkTrafficVisible(qsExpandedFraction == 1f && !privacyChipVisible)
             }
         }
 
@@ -553,6 +556,7 @@ constructor(
             updateBatteryMode()
         }
         setBatteryClickable(qsExpandedFraction == 1f || !privacyChipVisible)
+        setNetworkTrafficVisible(qsExpandedFraction == 1f && !privacyChipVisible)
     }
 
     private fun logInstantEvent(message: String) {
@@ -606,6 +610,11 @@ constructor(
     private fun setBatteryClickable(clickable: Boolean) {
         batteryIcon.setOnClickListener(if (clickable) this else null)
         batteryIcon.setClickable(clickable)
+    }
+
+    private fun setNetworkTrafficVisible(visible: Boolean) {
+        val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        networkTraffic!!.setAlpha(if (visible && !isLandscape) 1f else 0f)
     }
 
     override fun dump(pw: PrintWriter, args: Array<out String>) {
