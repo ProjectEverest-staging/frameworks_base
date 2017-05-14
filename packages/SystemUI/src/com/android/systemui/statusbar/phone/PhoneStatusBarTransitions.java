@@ -32,7 +32,6 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
     private final float mIconAlphaWhenOpaque;
 
     private boolean mIsHeadsUp;
-
     private View mStartSide, mStatusIcons, mBattery;
     private Animator mCurrentAnimation;
 
