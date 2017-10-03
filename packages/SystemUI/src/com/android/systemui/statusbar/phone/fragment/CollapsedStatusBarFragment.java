@@ -176,6 +176,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     private boolean mShowVibrateIcon;
 
+    private View mBatteryBar;
+
     private final OngoingCallListener mOngoingCallListener = new OngoingCallListener() {
         @Override
         public void onOngoingCallStateChanged(boolean animate) {
@@ -367,6 +369,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mClockController = mStatusBar.getClockController();
         mSignalClusterEndPadding = getResources().getDimensionPixelSize(R.dimen.signal_cluster_battery_padding);
         mStatusIcons = mStatusBar.findViewById(R.id.statusIcons);
+        mBatteryBar = mStatusBar.findViewById(R.id.battery_bar);
         mOngoingCallChip = mStatusBar.findViewById(R.id.ongoing_call_chip);
         mClockView = mStatusBar.findViewById(R.id.clock);
         mCenterClockView = mStatusBar.findViewById(R.id.clock_center);
@@ -735,15 +738,17 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     private void hideEndSideContent(boolean animate) {
+        animateHide(mBatteryBar, animate);
         if (!animate) {
             mEndSideAlphaController.setAlpha(/*alpha*/ 0f, SOURCE_OTHER);
         } else {
             mEndSideAlphaController.animateToAlpha(/*alpha*/ 0f, SOURCE_OTHER, FADE_OUT_DURATION,
                     InterpolatorsAndroidX.ALPHA_OUT, /*startDelay*/ 0);
-        }
+        }        
     }
 
     private void showEndSideContent(boolean animate) {
+        animateShow(mBatteryBar, animate);
         if (!animate) {
             mEndSideAlphaController.setAlpha(1f, SOURCE_OTHER);
             return;
@@ -756,7 +761,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         } else {
             mEndSideAlphaController.animateToAlpha(/*alpha*/ 1f, SOURCE_OTHER, FADE_IN_DURATION,
                     InterpolatorsAndroidX.ALPHA_IN, FADE_IN_DELAY);
-        }
+        }       
     }
 
     private void hideClock(boolean animate) {
