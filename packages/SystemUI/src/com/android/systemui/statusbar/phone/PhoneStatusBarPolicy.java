@@ -170,7 +170,6 @@ public class PhoneStatusBarPolicy
     private BluetoothController mBluetooth;
     private AlarmManager.AlarmClockInfo mNextAlarm;
 
-    private boolean mNfcVisible;
     private NfcAdapter mAdapter;
     private final Context mContext;
 
@@ -357,7 +356,7 @@ public class PhoneStatusBarPolicy
         mIconController.setIconVisibility(mSlotScreenRecord, false);
 
         mIconController.setIcon(mSlotNfc, R.drawable.stat_sys_nfc,
-                mResources.getString(R.string.accessibility_status_bar_nfc));
+                mResources.getString(R.string.status_bar_nfc));
 
         mIconController.setIconVisibility(mSlotNfc, false);
         updateNfc();
@@ -435,12 +434,7 @@ public class PhoneStatusBarPolicy
     }
 
     private final void updateNfc() {
-        mNfcVisible =  getAdapter() != null && getAdapter().isEnabled();
-        if (mNfcVisible) {
-            mIconController.setIconVisibility(mSlotNfc, true);
-        } else {
-            mIconController.setIconVisibility(mSlotNfc, false);
-        }
+        mIconController.setIconVisibility(mSlotNfc, getAdapter() != null && getAdapter().isEnabled());
     }
 
     private final void updateVolumeZen() {
@@ -810,7 +804,6 @@ public class PhoneStatusBarPolicy
                 case NfcAdapter.ACTION_ADAPTER_STATE_CHANGED:
                     updateNfc();
                     break;
-
             }
         }
     };
