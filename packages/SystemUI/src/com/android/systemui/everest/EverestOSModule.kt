@@ -27,6 +27,7 @@ import com.android.systemui.qs.tiles.DcDimmingTile
 import com.android.systemui.qs.tiles.HeadsUpTile
 import com.android.systemui.qs.tiles.PowerShareTile
 import com.android.systemui.qs.tiles.PreferredNetworkTile
+import com.android.systemui.qs.tiles.LiveDisplayTile
 import com.android.systemui.qs.tiles.SmartPixelsTile
 import com.android.systemui.qs.tiles.ScreenshotTile
 import com.android.systemui.qs.tiles.SoundTile
@@ -93,6 +94,12 @@ interface EverestOSModule {
     @IntoMap
     @StringKey(HeadsUpTile.TILE_SPEC)
     fun bindHeadsUpTile(headsUpTile: HeadsUpTile): QSTileImpl<*>
+
+    /** Inject LiveDisplayTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(LiveDisplayTile.TILE_SPEC)
+    fun bindLiveDisplayTile(liveDisplayTile: LiveDisplayTile): QSTileImpl<*>
 
     /** Inject PowerShareTile into tileMap in QSModule */
     @Binds
