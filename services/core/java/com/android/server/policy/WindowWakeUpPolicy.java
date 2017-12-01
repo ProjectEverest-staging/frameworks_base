@@ -220,6 +220,14 @@ class WindowWakeUpPolicy {
 
     /** Wakes up {@link PowerManager}. */
     private void wakeUp(long wakeTime, @WakeReason int reason, String details) {
-        mPowerManager.wakeUp(wakeTime, reason, "android.policy:" + details);
+	wakeUp(wakeTime, reason, details, false);
+    }
+
+    private void wakeUp(long wakeTime, @WakeReason int reason, String details, boolean withProximityCheck) {
+        if (withProximityCheck) {
+                mPowerManager.wakeUpWithProximityCheck(wakeTime, reason, "android.policy:" + details);
+	} else {
+	        mPowerManager.wakeUp(wakeTime, reason, "android.policy:" + details);
+	}
     }
 }
