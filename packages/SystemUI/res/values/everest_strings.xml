@@ -24,8 +24,9 @@
     <string name="screenrecord_skip_time_summary">Remove 3 second wait</string>
     <string name="screenrecord_hevc_switch_label">Enable HEVC</string>
 
-    <!-- Name of the nfc status bar icon. -->
+    <!-- Statusbar Icons -->
     <string name="status_bar_nfc">NFC</string>
+    <string name="status_bar_vpn">VPN</string>
 
     <!-- Status bar - icons -->
     <string name="status_bar_icons_title">Status bar icons</string>
