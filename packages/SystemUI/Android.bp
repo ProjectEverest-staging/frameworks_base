@@ -201,6 +201,7 @@ android_library {
         "notification_flags_lib",
        "bcsmartspace-google",
         "vendor.lineage.powershare-V1.0-java",
+        "FadingEdgeLayoutLib",
     ],
     libs: [
         "keepanno-annotations",
