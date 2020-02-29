@@ -7448,5 +7448,7 @@ message MetricsEvent {
     // Everest constant
     EVEREST = 1999;
 
+    // Panel for Mobile Data
+    PANEL_MOBILE_DATA = 4001;
   }
 }
