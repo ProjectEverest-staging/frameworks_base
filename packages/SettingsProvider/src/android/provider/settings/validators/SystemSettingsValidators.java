@@ -254,5 +254,6 @@ public class SystemSettingsValidators {
         VALIDATORS.put(System.ADAPTIVE_PLAYBACK_TIMEOUT, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.RINGTONE_VIBRATION_PATTERN, new InclusiveIntegerRangeValidator(0, 4));
         VALIDATORS.put(System.NOTIFICATION_VIBRATION_PATTERN, new InclusiveIntegerRangeValidator(0, 4));
+        VALIDATORS.put(System.NAV_BAR_COMPACT_LAYOUT, BOOLEAN_VALIDATOR);
     }
 }
