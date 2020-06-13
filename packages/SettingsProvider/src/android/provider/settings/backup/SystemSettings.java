@@ -124,5 +124,7 @@ public class SystemSettings {
         Settings.System.MAX_MUSIC_VOLUME,
         Settings.System.MAX_ALARM_VOLUME,
         Settings.System.FLASHLIGHT_ON_CALL,
+        Settings.System.FLASHLIGHT_ON_CALL_IGNORE_DND,
+        Settings.System.FLASHLIGHT_ON_CALL_RATE,
     };
 }
