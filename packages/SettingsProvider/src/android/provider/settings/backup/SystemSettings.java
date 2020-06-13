@@ -127,7 +127,9 @@ public class SystemSettings {
                 Settings.System.MAX_CALL_VOLUME,
                 Settings.System.MAX_MUSIC_VOLUME,
                 Settings.System.MAX_ALARM_VOLUME,
-                Settings.System.FLASHLIGHT_ON_CALL
+                Settings.System.FLASHLIGHT_ON_CALL,
+                Settings.System.FLASHLIGHT_ON_CALL_IGNORE_DND,
+                Settings.System.FLASHLIGHT_ON_CALL_RATE
         ));
         if (Flags.backUpSmoothDisplayAndForcePeakRefreshRate()) {
             settings.add(Settings.System.PEAK_REFRESH_RATE);
