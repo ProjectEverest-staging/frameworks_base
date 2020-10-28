@@ -6286,6 +6286,12 @@ public final class Settings {
         @Readable
         public static final String ARCANE_IDLE_MANAGER = "arcane_idle_manager";
 
+       /**
+         * Whether or not volume button music controls should be enabled to seek media tracks
+         * @hide
+         */
+        public static final String VOLBTN_MUSIC_CONTROLS = "volbtn_music_controls";
+
         /**
          * Whether to play notification sound and vibration if screen is ON
          * 0 - never
