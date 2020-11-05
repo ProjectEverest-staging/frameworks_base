@@ -186,4 +186,7 @@
 
     <!-- Device hardware keys -->
     <java-symbol type="integer" name="config_deviceHardwareWakeKeys" />
+
+    <!-- Horizon Light -->
+    <java-symbol type="integer" name="config_AmbientPulseLightColor" />
 </resources>
