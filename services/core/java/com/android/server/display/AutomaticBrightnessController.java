@@ -37,6 +37,7 @@ import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.Trace;
+import android.provider.Settings;
 import android.util.EventLog;
 import android.util.MathUtils;
 import android.util.Slog;
@@ -249,6 +250,8 @@ public class AutomaticBrightnessController {
     private Clock mClock;
     private final Injector mInjector;
 
+    private boolean mAutoBrightnessOneShot;
+
     AutomaticBrightnessController(Callbacks callbacks, Looper looper,
             SensorManager sensorManager, Sensor lightSensor,
             BrightnessMappingStrategy interactiveModeBrightnessMapper,
@@ -339,6 +342,7 @@ public class AutomaticBrightnessController {
         mBrightnessThrottler = brightnessThrottler;
         mInteractiveModeBrightnessMapper = interactiveModeBrightnessMapper;
         mIdleModeBrightnessMapper = idleModeBrightnessMapper;
+        mAutoBrightnessOneShot = false;
         // Initialize to active (normal) screen brightness mode
         switchToInteractiveScreenBrightnessMode();
 
@@ -417,7 +421,7 @@ public class AutomaticBrightnessController {
     public void configure(int state, @Nullable BrightnessConfiguration configuration,
             float brightness, boolean userChangedBrightness, float adjustment,
             boolean userChangedAutoBrightnessAdjustment, int displayPolicy,
-            boolean shouldResetShortTermModel) {
+            boolean shouldResetShortTermModel, boolean autoBrightnessOneShot) {
         mState = state;
         boolean changed = setBrightnessConfiguration(configuration, shouldResetShortTermModel);
         changed |= setDisplayPolicy(displayPolicy);
@@ -445,6 +449,8 @@ public class AutomaticBrightnessController {
 
         if (changed) {
             updateAutoBrightness(false /*sendUpdate*/, userInitiatedChange);
+        } else {
+            handleSettingsChange(autoBrightnessOneShot);
         }
     }
 
@@ -486,6 +492,16 @@ public class AutomaticBrightnessController {
 
     float getFastAmbientLux() {
         return mFastAmbientLux;
+    }
+
+    private void handleSettingsChange(boolean autoBrightnessOneShot) {
+        if (mAutoBrightnessOneShot && !autoBrightnessOneShot) {
+            mSensorManager.registerListener(mLightSensorListener, mLightSensor,
+                    mCurrentLightSensorRate * 1000, mHandler);
+        } else if (!mAutoBrightnessOneShot && autoBrightnessOneShot) {
+            mSensorManager.unregisterListener(mLightSensorListener);
+        }
+        mAutoBrightnessOneShot = autoBrightnessOneShot;
     }
 
     private boolean setDisplayPolicy(int policy) {
@@ -980,6 +996,9 @@ public class AutomaticBrightnessController {
             if (sendUpdate) {
                 mCallbacks.updateBrightness();
             }
+        }
+        if (mAutoBrightnessOneShot) {
+            mSensorManager.unregisterListener(mLightSensorListener);
         }
     }
 
