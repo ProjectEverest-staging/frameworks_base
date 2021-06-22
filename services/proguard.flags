@@ -82,6 +82,7 @@
 }
 # TODO(b/210510433): Revisit and fix with @Keep, or consider auto-generating from
 # frameworks/base/services/core/jni/onload.cpp.
+-keep,allowoptimization,allowaccessmodification class com.android.server.audio.AudioVolumeChangeHandler { *; }
 -keep,allowoptimization,allowaccessmodification class com.android.server.broadcastradio.hal1.BroadcastRadioService { *; }
 -keep,allowoptimization,allowaccessmodification class com.android.server.broadcastradio.hal1.Convert { *; }
 -keep,allowoptimization,allowaccessmodification class com.android.server.broadcastradio.hal1.Tuner { *; }

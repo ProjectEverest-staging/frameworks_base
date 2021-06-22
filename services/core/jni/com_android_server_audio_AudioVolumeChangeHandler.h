@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The Android Open Source Project
+ * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,21 +22,17 @@
 namespace android {
 
 // keep in sync with AudioManager.AudioVolumeGroupChangeHandler.java
-#define AUDIOVOLUMEGROUP_EVENT_VOLUME_CHANGED      1000
-#define AUDIOVOLUMEGROUP_EVENT_SERVICE_DIED        1001
+#define AUDIOVOLUMEGROUP_EVENT_VOLUME_CHANGED                   1000
 
-class JNIAudioVolumeGroupCallback: public AudioSystem::AudioVolumeGroupCallback
+class JNIAudioVolumeChangeHandler: public AudioSystem::AudioVolumeGroupCallback
 {
 public:
-    JNIAudioVolumeGroupCallback(JNIEnv* env, jobject thiz, jobject weak_thiz);
-    ~JNIAudioVolumeGroupCallback();
+    JNIAudioVolumeChangeHandler(JNIEnv* env, jobject thiz, jobject weak_thiz);
+    ~JNIAudioVolumeChangeHandler();
 
     void onAudioVolumeGroupChanged(volume_group_t group, int flags) override;
-    void onServiceDied() override;
 
 private:
-    void sendEvent(int event);
-
     jclass      mClass; /**< Reference to AudioVolumeGroupChangeHandler class. */
     jobject     mObject; /**< Weak ref to AudioVolumeGroupChangeHandler object to call on. */
 };

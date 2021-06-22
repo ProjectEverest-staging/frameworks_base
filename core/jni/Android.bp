@@ -209,7 +209,6 @@ cc_library_shared_for_libandroid_runtime {
                 "android_media_AudioAttributes.cpp",
                 "android_media_AudioProductStrategies.cpp",
                 "android_media_AudioVolumeGroups.cpp",
-                "android_media_AudioVolumeGroupCallback.cpp",
                 "android_media_DeviceCallback.cpp",
                 "android_media_MediaMetricsJNI.cpp",
                 "android_media_MicrophoneInfo.cpp",
