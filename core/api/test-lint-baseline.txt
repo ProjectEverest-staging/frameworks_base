@@ -999,6 +999,8 @@ RequiresPermission: android.media.AudioManager#getCallUplinkInjectionAudioTrack(
     Method 'getCallUplinkInjectionAudioTrack' documentation mentions permissions already declared by @RequiresPermission
 RequiresPermission: android.media.AudioManager#registerAudioPolicy(android.media.audiopolicy.AudioPolicy):
     Method 'registerAudioPolicy' documentation mentions permissions already declared by @RequiresPermission
+RequiresPermission: android.media.AudioManager#registerVolumeGroupCallback(java.util.concurrent.Executor, android.media.AudioManager.VolumeGroupCallback):
+    Method 'registerVolumeGroupCallback' documentation mentions permissions already declared by @RequiresPermission
 RequiresPermission: android.media.AudioRecord#shareAudioHistory(String, long):
     Method 'shareAudioHistory' documentation mentions permissions already declared by @RequiresPermission
 RequiresPermission: android.media.AudioRecordingConfiguration#getClientUid():

@@ -533,6 +533,10 @@ KotlinKeyword: android.app.Notification#when:
     Avoid field names that are Kotlin hard keywords ("when"); see https://android.github.io/kotlin-guides/interop.html#no-hard-keywords
 
 
+KotlinOperator: android.hardware.camera2.extension.CharacteristicsMap#get(String):
+    Method can be invoked with an indexing operator from Kotlin: `get` (this is usually desirable; just make sure it makes sense for this type of object)
+
+
 ListenerLast: android.telephony.satellite.SatelliteManager#stopSatelliteTransmissionUpdates(android.telephony.satellite.SatelliteTransmissionUpdateCallback, java.util.concurrent.Executor, java.util.function.Consumer<java.lang.Integer>) parameter #1:
     Listeners should always be at end of argument list (method `stopSatelliteTransmissionUpdates`)
 ListenerLast: android.telephony.satellite.SatelliteManager#stopSatelliteTransmissionUpdates(android.telephony.satellite.SatelliteTransmissionUpdateCallback, java.util.concurrent.Executor, java.util.function.Consumer<java.lang.Integer>) parameter #2:
@@ -1007,6 +1011,8 @@ RequiresPermission: android.media.AudioManager#getCallUplinkInjectionAudioTrack(
     Method 'getCallUplinkInjectionAudioTrack' documentation mentions permissions already declared by @RequiresPermission
 RequiresPermission: android.media.AudioManager#registerAudioPolicy(android.media.audiopolicy.AudioPolicy):
     Method 'registerAudioPolicy' documentation mentions permissions already declared by @RequiresPermission
+RequiresPermission: android.media.AudioManager#registerVolumeGroupCallback(java.util.concurrent.Executor, android.media.AudioManager.VolumeGroupCallback):
+    Method 'registerVolumeGroupCallback' documentation mentions permissions already declared by @RequiresPermission
 RequiresPermission: android.media.AudioRecord#shareAudioHistory(String, long):
     Method 'shareAudioHistory' documentation mentions permissions already declared by @RequiresPermission
 RequiresPermission: android.media.AudioRecordingConfiguration#getClientUid():

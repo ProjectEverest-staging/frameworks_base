@@ -160,6 +160,7 @@ import android.media.audiopolicy.AudioPolicyConfig;
 import android.media.audiopolicy.AudioProductStrategy;
 import android.media.audiopolicy.AudioVolumeGroup;
 import android.media.audiopolicy.IAudioPolicyCallback;
+import android.media.audiopolicy.IAudioVolumeChangeDispatcher;
 import android.media.permission.ClearCallingIdentityContext;
 import android.media.permission.SafeCloseable;
 import android.media.projection.IMediaProjection;
@@ -4005,6 +4006,31 @@ public class AudioService extends IAudioService.Stub
         }
     }
 
+    //================================
+    // Audio Volume Change Dispatcher
+    //================================
+    private final Object mAudioVolumeChangeHandlerLock = new Object();
+
+    @GuardedBy("mAudioVolumeChangeHandlerLock")
+    private final AudioVolumeChangeHandler mAudioVolumeChangeHandler =
+        new AudioVolumeChangeHandler();
+
+    /** @see AudioManager#registerVolumeGroupCallback(executor, callback) */
+    public void registerAudioVolumeCallback(IAudioVolumeChangeDispatcher callback) {
+        enforceModifyAudioRoutingPermission();
+        synchronized (mAudioVolumeChangeHandlerLock) {
+            mAudioVolumeChangeHandler.init();
+            mAudioVolumeChangeHandler.registerListener(callback);
+        }
+    }
+
+    /** @see AudioManager#unregisterVolumeGroupCallback(callback) */
+    public void unregisterAudioVolumeCallback(IAudioVolumeChangeDispatcher callback) {
+        enforceModifyAudioRoutingPermission();
+        synchronized (mAudioVolumeChangeHandlerLock) {
+            mAudioVolumeChangeHandler.unregisterListener(callback);
+        }
+    }
 
     @Override
     @android.annotation.EnforcePermission(anyOf = {
