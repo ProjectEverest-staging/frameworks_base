@@ -30,6 +30,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.IntDef;
 import android.app.AlarmManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.provider.Settings;
 import android.os.Handler;
@@ -38,6 +39,7 @@ import android.os.UserHandle;
 import android.util.Log;
 import android.util.MathUtils;
 import android.util.Pair;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
@@ -1593,26 +1595,27 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, Dump
 
     private void updateThemeColors() {
         if (mScrimBehind == null) return;
-        int background = Utils.getColorAttr(mScrimBehind.getContext(),
-                com.android.internal.R.attr.materialColorSurfaceDim).getDefaultColor();
-        int surfaceBackground = Utils.getColorAttr(mScrimBehind.getContext(),
-                com.android.internal.R.attr.colorSurfaceHeader).getDefaultColor();
-        int accent = Utils.getColorAttr(mScrimBehind.getContext(),
-                com.android.internal.R.attr.materialColorPrimary).getDefaultColor();
+        Context themedContext =
+                new ContextThemeWrapper(mScrimBehind.getContext(), R.style.Theme_SystemUI_QuickSettings);
+        int background = Utils.getColorAttrDefaultColor(themedContext,
+                com.android.internal.R.attr.materialColorSurfaceDim);
+        int accent = Utils.getColorAttrDefaultColor(themedContext,
+                com.android.internal.R.attr.materialColorPrimary);
+
         mColors.setMainColor(background);
         mColors.setSecondaryColor(accent);
         final boolean isBackgroundLight = !ContrastColorUtil.isColorDark(background);
         mColors.setSupportsDarkText(isBackgroundLight);
 
-        int surface = Utils.getColorAttr(mScrimBehind.getContext(),
-                com.android.internal.R.attr.materialColorSurface).getDefaultColor();
+        int surface = Utils.getColorAttrDefaultColor(themedContext,
+                R.attr.underSurface);
         for (ScrimState state : ScrimState.values()) {
             state.setSurfaceColor(surface);
         }
 
-        mBehindColors.setMainColor(mUseDualToneColor ? surfaceBackground : background);
+        mBehindColors.setMainColor(mUseDualToneColor ? surface : background);
         mBehindColors.setSecondaryColor(accent);
-        final boolean isSurfaceBackgroundLight = !ContrastColorUtil.isColorDark(surfaceBackground);
+        final boolean isSurfaceBackgroundLight = !ContrastColorUtil.isColorDark(surface);
         mBehindColors.setSupportsDarkText(mUseDualToneColor ? isSurfaceBackgroundLight : isBackgroundLight);
 
         mNeedsDrawableColorUpdate = true;
