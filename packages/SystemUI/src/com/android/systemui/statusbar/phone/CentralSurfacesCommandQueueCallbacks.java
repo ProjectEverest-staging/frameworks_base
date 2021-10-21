@@ -106,6 +106,7 @@ public class CentralSurfacesCommandQueueCallbacks implements CommandQueue.Callba
     private final Lazy<CameraLauncher> mCameraLauncherLazy;
     private final QuickSettingsController mQsController;
     private final QSHost mQSHost;
+
     private static final VibrationAttributes HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_HARDWARE_FEEDBACK);
 
@@ -549,5 +550,12 @@ public class CentralSurfacesCommandQueueCallbacks implements CommandQueue.Callba
         mShadeViewController.performHapticFeedback(
                 HapticFeedbackConstants.GESTURE_START
         );
+    }
+
+    @Override
+    public void toggleCameraFlash() {
+        if (mFlashlightController.isAvailable()) {
+            mFlashlightController.setFlashlight(!mFlashlightController.isEnabled());
+        }
     }
 }
