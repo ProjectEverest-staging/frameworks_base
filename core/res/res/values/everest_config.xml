@@ -4,5 +4,6 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-
+    <!-- Whether devices suports in-display fingerprint when screen is off -->
+    <bool name="config_supportsScreenOffUdfps">false</bool>
 </resources>
