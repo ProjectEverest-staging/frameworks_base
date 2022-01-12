@@ -277,5 +277,6 @@ public class SecureSettings {
         Settings.Secure.DOZE_ON_CHARGE,
         Settings.Secure.EXTRA_DIM_AUTO_MODE,
         Settings.Secure.EXTRA_DIM_AUTO_TIME,
+        Settings.Secure.SYSTEM_BLACK_THEME
     };
 }
