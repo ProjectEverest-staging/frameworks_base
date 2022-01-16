@@ -7084,6 +7084,14 @@ public final class Settings {
          */
         public static final String LOCKSCREEN_WEATHER_TEXT = "lockscreen_weather_text";
 
+	/**
+         * Whether to play notification sound and vibration if screen is ON
+         * 0 - never
+         * 1 - always
+         * @hide
+         */
+        public static final String NOTIFICATION_SOUND_VIB_SCREEN_ON = "notification_sound_vib_screen_on";
+
         /**
          * Whether to show floating rotation button
          * @hide
