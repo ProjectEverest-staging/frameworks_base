@@ -174,4 +174,7 @@
         <item>lockdown</item>
         <item>devicecontrols</item>
     </string-array>
+
+  <!-- Whether to enable lockscreen charging info settings -->
+  <bool name="config_enable_charging_info">true</bool>
 </resources>
