@@ -224,6 +224,7 @@ public class KeyguardIndicationController {
     private KeyguardUpdateMonitorCallback mUpdateMonitorCallback;
 
     private boolean mChargingInfoEnabled;
+    private boolean mShowRemainingTime;
 
     private boolean mDozing;
     private boolean mIsActiveDreamLockscreenHosted;
@@ -328,6 +329,7 @@ public class KeyguardIndicationController {
 
         mFaceAcquiredMessageDeferral = faceHelpMessageDeferral.create();
         mChargingInfoEnabled = mContext.getResources().getBoolean(com.android.internal.R.bool.config_enable_charging_info);
+        mShowRemainingTime = mContext.getResources().getBoolean(com.android.internal.R.bool.config_show_charging_remaining_time);
         mCoExFaceAcquisitionMsgIdsToShow = new HashSet<>();
         int[] msgIds = context.getResources().getIntArray(
                 com.android.systemui.res.R.array.config_face_help_msgs_when_fingerprint_enrolled);
@@ -1076,7 +1078,7 @@ public class KeyguardIndicationController {
             return mContext.getResources().getString(R.string.keyguard_charged);
         }
 
-        final boolean hasChargingTime = mChargingTimeRemaining > 0;
+        final boolean hasChargingTime = mChargingTimeRemaining > 0 && mShowRemainingTime;
         if (mPowerPluggedInWired) {
             switch (mChargingSpeed) {
                 case BatteryStatus.CHARGING_FAST:
