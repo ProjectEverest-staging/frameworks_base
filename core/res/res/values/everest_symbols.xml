@@ -190,4 +190,7 @@
 
     <!-- Device hardware keys -->
     <java-symbol type="integer" name="config_deviceHardwareWakeKeys" />
+
+    <!-- Lock gesture -->
+    <java-symbol type="string" name="gesture_locked_warning" />
 </resources>

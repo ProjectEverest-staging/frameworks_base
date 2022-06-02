@@ -7182,6 +7182,12 @@ public final class Settings {
         public static final String CHARGING_ANIMATION = "charging_animation";
 
         /**
+         * Current status of whether gestures are locked
+         * @hide
+         */
+        public static final String LOCK_GESTURE_STATUS = "lock_gesture_status";
+
+        /**
          * These are all public system settings
          *
          * @hide
