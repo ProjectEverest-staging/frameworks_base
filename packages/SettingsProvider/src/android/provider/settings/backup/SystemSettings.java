@@ -116,7 +116,8 @@ public class SystemSettings {
                 Settings.System.NOTIFICATION_COOLDOWN_ALL,
                 Settings.System.NOTIFICATION_COOLDOWN_VIBRATE_UNLOCKED,
                 Settings.System.RINGTONE_VIBRATION_PATTERN,
-                Settings.System.NOTIFICATION_VIBRATION_PATTERN
+                Settings.System.NOTIFICATION_VIBRATION_PATTERN,
+                Settings.System.NAVIGATION_BAR_IME_SPACE
         ));
         if (Flags.backUpSmoothDisplayAndForcePeakRefreshRate()) {
             settings.add(Settings.System.PEAK_REFRESH_RATE);
