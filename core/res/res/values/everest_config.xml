@@ -83,4 +83,7 @@
 
      <!-- Display color inversion availability -->
     <bool name="config_displayInversionAvailable">true</bool>
+
+    <!-- Whether to cancel fingerprint operation if not idle -->
+    <bool name="config_fpCancelIfNotIdle">false</bool>
 </resources>
