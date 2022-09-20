@@ -13875,10 +13875,10 @@ public final class Settings {
         public static final String VOLUME_PANEL_ON_LEFT = "volume_panel_on_left";
 
         /**
-         * Whether to turn on black theme
+         * Switch to change custom system theme
          * @hide
          */
-        public static final String SYSTEM_BLACK_THEME = "system_black_theme";
+        public static final String SYSTEM_CUSTOM_THEME = "system_custom_theme";
 
         /**
          * These entries are considered common between the personal and the managed profile,
