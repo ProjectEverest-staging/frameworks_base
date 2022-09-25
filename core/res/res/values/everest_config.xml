@@ -186,4 +186,7 @@
 
   <!-- Expected value from fast charging status file  -->
   <string name="config_oemFastChargerStatusValue" translatable="false"></string>
+
+    <!-- Mock Oplus LinearmotorVibratorService -->
+    <bool name="config_mockOplusLinearmotorVibratorService">false</bool>
 </resources>
