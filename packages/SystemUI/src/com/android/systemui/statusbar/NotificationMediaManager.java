@@ -33,6 +33,7 @@ import android.util.Log;
 
 import com.android.systemui.Dependency;
 import com.android.systemui.Dumpable;
+import com.android.systemui.colorextraction.SysuiColorExtractor;
 import com.android.systemui.dump.DumpManager;
 import com.android.systemui.media.controls.domain.pipeline.MediaDataManager;
 import com.android.systemui.media.controls.shared.model.MediaData;
@@ -98,6 +99,8 @@ public class NotificationMediaManager implements Dumpable {
     private boolean mIslandNowPlayingEnabled;
     private NotificationUtils notifUtils;
 
+    private final SysuiColorExtractor mColorExtractor;
+
     private final MediaController.Callback mMediaListener = new MediaController.Callback() {
         @Override
         public void onPlaybackStateChanged(PlaybackState state) {
@@ -152,13 +155,15 @@ public class NotificationMediaManager implements Dumpable {
             NotifPipeline notifPipeline,
             NotifCollection notifCollection,
             MediaDataManager mediaDataManager,
-            DumpManager dumpManager) {
+            DumpManager dumpManager,
+            SysuiColorExtractor colorExtractor) {
         mContext = context;
         mMediaListeners = new ArrayList<>();
         mVisibilityProvider = visibilityProvider;
         mMediaDataManager = mediaDataManager;
         mNotifPipeline = notifPipeline;
         mNotifCollection = notifCollection;
+        mColorExtractor = colorExtractor;
 
         setupNotifPipeline();
 
@@ -313,9 +318,12 @@ public class NotificationMediaManager implements Dumpable {
         mMediaListeners.add(callback);
         callback.onPrimaryMetadataOrStateChanged(mMediaMetadata,
                 getMediaControllerPlaybackState(mMediaController));
+        callback.setMediaNotificationColor(mColorExtractor.getMediaBackgroundColor());
     }
 
     public void removeCallback(MediaListener callback) {
+        mColorExtractor.setMediaBackgroundColor(0);
+        callback.setMediaNotificationColor(0);
         mMediaListeners.remove(callback);
     }
 
@@ -389,6 +397,7 @@ public class NotificationMediaManager implements Dumpable {
         ArrayList<MediaListener> callbacks = new ArrayList<>(mMediaListeners);
         for (int i = 0; i < callbacks.size(); i++) {
             callbacks.get(i).onPrimaryMetadataOrStateChanged(mMediaMetadata, state);
+            callbacks.get(i).setMediaNotificationColor(mColorExtractor.getMediaBackgroundColor());
         }
     }
 
@@ -456,5 +465,7 @@ public class NotificationMediaManager implements Dumpable {
          */
         default void onPrimaryMetadataOrStateChanged(MediaMetadata metadata,
                 @PlaybackState.State int state) {}
+
+        default void setMediaNotificationColor(int color) {};
     }
 }
