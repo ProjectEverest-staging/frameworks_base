@@ -85,4 +85,7 @@
     <java-symbol type="bool" name="config_proximityCheckOnWake" />
     <java-symbol type="integer" name="config_proximityCheckTimeout" />
     <java-symbol type="bool" name="config_proximityCheckOnWakeEnabledByDefault" />
+
+    <!-- Ignore post running notifications for selected apps -->
+    <java-symbol type="array" name="config_postNotificationIgnoredApps" />
 </resources>
