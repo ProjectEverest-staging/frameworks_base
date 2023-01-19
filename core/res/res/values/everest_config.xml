@@ -21,4 +21,7 @@
 
     <!-- Whether device supports an alt. ambient display -->
     <bool name="config_alt_ambient_display">false</bool>
+
+    <!-- Display color inversion availability -->
+    <bool name="config_displayInversionAvailable">true</bool>
 </resources>
