@@ -12744,6 +12744,15 @@ public final class Settings {
         public static final String DOZE_SINGLE_TAP_GESTURE_AMBIENT = "doze_single_tap_gesture_ambient";
 
         /**
+         * Whether the nav bar back/recents button positions should be swapped.
+         * When enabled, the back is on the right of the nav bar.
+         *
+         * @hide
+         */
+        public static final String NAV_BAR_BUTTON_SWAP_ENABLED =
+                "nav_bar_button_swap_enabled";
+
+        /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
          */
