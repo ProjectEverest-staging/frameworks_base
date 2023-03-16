@@ -49,4 +49,8 @@
     <string name="charging_control_notification_content_limit_reached">Battery is charged to %1$d%%</string>
     <string name="charging_control_notification_content_target">Battery will be fully charged at %1$s</string>
     <string name="charging_control_notification_content_target_reached">Battery is charged</string>
+
+    <!-- Title & summary of notification letting users know that battery saver is now on [CHAR_LIMIT=80] -->
+    <string name="battery_saver_on_notification_title">Battery Saver turned on</string>
+    <string name="battery_saver_on_notification_summary">By schedule. Press to review settings.</string>
 </resources>
