@@ -96,13 +96,8 @@ android_library {
         ":ReleaseJavaFiles",
         "compose/features/src/**/*.kt",
         "compose/facade/enabled/src/**/*.kt",
+        ":DebugJavaFiles",
     ],
-    product_variables: {
-        debuggable: {
-            srcs: [":DebugJavaFiles"],
-            exclude_srcs: [":ReleaseJavaFiles"],
-        },
-    },
     use_resource_processor: true,
     static_libs: [
         "SystemUI-res",
