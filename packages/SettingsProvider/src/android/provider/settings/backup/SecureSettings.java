@@ -275,5 +275,7 @@ public class SecureSettings {
         Settings.Secure.DOZE_SINGLE_TAP_GESTURE_AMBIENT,
         Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS,
         Settings.Secure.DOZE_ON_CHARGE,
+        Settings.Secure.EXTRA_DIM_AUTO_MODE,
+        Settings.Secure.EXTRA_DIM_AUTO_TIME,
     };
 }
