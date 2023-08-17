@@ -50,10 +50,6 @@
     <!-- Whether device supports an alt. ambient display -->
     <java-symbol type="bool" name="config_alt_ambient_display"/>
 
-    <!-- SystemUI Restart -->
-    <java-symbol type="string" name="systemui_restart_title" />
-    <java-symbol type="string" name="systemui_restart_message" />
-
     <!-- Location indicator -->
     <java-symbol type="drawable" name="stat_sys_location" />
     
@@ -153,4 +149,8 @@
     <!-- Soft restart dialog -->
     <java-symbol type="string" name="system_restart_title" />
     <java-symbol type="string" name="system_restart_message" />
+
+    <!-- SystemUI restart dialog -->
+    <java-symbol type="string" name="systemui_restart_title" />
+    <java-symbol type="string" name="systemui_restart_message" />
 </resources>
