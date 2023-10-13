@@ -1642,6 +1642,10 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, Dump
         mScreenOn = false;
     }
 
+    public boolean isScreenOn() {
+        return mScreenOn;
+    }
+
     public void setExpansionAffectsAlpha(boolean expansionAffectsAlpha) {
         mExpansionAffectsAlpha = expansionAffectsAlpha;
     }
