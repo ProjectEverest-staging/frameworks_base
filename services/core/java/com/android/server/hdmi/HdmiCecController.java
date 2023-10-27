@@ -350,7 +350,7 @@ final class HdmiCecController {
      * {@link HdmiCecNetwork} only.
      *
      * @return CEC physical address of the device. The range of success address
-     *         is between 0x0000 and 0xFFFF. If failed it returns -1
+     *         is between 0x0000 and 0xFFFE. If failed it returns INVALID_PHYSICAL_ADDRESS.
      */
     @ServiceThreadOnly
     int getPhysicalAddress() {
@@ -1123,7 +1123,7 @@ final class HdmiCecController {
                     hdmiPortInfo[i] = new HdmiPortInfo.Builder(
                                     portInfo.portId,
                                     portInfo.type,
-                                    portInfo.physicalAddress)
+                                    Short.toUnsignedInt((short)portInfo.physicalAddress))
                                     .setCecSupported(portInfo.cecSupported)
                                     .setMhlSupported(false)
                                     .setArcSupported(portInfo.arcSupported)
@@ -1313,7 +1313,7 @@ final class HdmiCecController {
                     hdmiPortInfo[i] = new HdmiPortInfo.Builder(
                             portInfo.portId,
                             portInfo.type,
-                            portInfo.physicalAddress)
+                            Short.toUnsignedInt(portInfo.physicalAddress))
                             .setCecSupported(portInfo.cecSupported)
                             .setMhlSupported(false)
                             .setArcSupported(portInfo.arcSupported)
@@ -1510,7 +1510,7 @@ final class HdmiCecController {
                     hdmiPortInfo[i] = new HdmiPortInfo.Builder(
                             portInfo.portId,
                             portInfo.type,
-                            portInfo.physicalAddress)
+                            Short.toUnsignedInt(portInfo.physicalAddress))
                             .setCecSupported(portInfo.cecSupported)
                             .setMhlSupported(false)
                             .setArcSupported(portInfo.arcSupported)
