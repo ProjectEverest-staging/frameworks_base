@@ -149,7 +149,10 @@ public class TriStateUiControllerImpl implements TriStateUiController,
 
         @Override
         public void onCaptionComponentStateChanged(
-                Boolean isComponentEnabled, Boolean fromTooltip) {}
+                Boolean isComponentEnabled, Boolean fromTooltip) { }
+
+	@Override
+	public void onVolumeChangedFromKey() { }
 
         @Override
         public void onCaptionEnabledStateChanged(Boolean isEnabled, Boolean checkBeforeSwitch) {}
