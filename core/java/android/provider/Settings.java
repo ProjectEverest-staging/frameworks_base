@@ -6587,6 +6587,12 @@ public final class Settings {
         public static final String NETWORK_TRAFFIC_REFRESH_INTERVAL = "network_traffic_refresh_interval";
 
         /**
+         * Whether to enable taskbar.
+         * @hide
+         */
+        public static final String ENABLE_TASKBAR = "enable_taskbar";
+
+        /**
          * Whether to show seconds next to clock in status bar
          * 0 - hide (default)
          * 1 - show
