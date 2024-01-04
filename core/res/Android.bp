@@ -162,6 +162,10 @@ android_app {
         "android.net.platform.flags-aconfig",
         "com.android.window.flags.window-aconfig",
     ],
+
+    required: [
+        "org.lineageos.platform-res",
+    ],
 }
 
 java_genrule {
