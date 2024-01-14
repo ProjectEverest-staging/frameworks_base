@@ -54,15 +54,11 @@ public class PocketModeService extends SystemService {
     private static final float GRAVITY_THRESHOLD = -0.6f;
     private static final int MIN_INCLINATION = 75;
     private static final int MAX_INCLINATION = 100;
-    private static final long TIMEOUT_DELAY = 2500;
-    private long lastSensorEventTimestamp = 0;
 
     private float[] gravityValues;
     private float proximitySensorValue;
     private float lightSensorValue;
     private int inclinationAngle;
-    
-    private final Handler mTimeoutHandler = new Handler();
 
     private Context mContext;
     private View mOverlayView;
@@ -76,7 +72,7 @@ public class PocketModeService extends SystemService {
     private SettingsObserver mSettingsObserver;
 
     private static final String POCKET_MODE_ENABLED = "pocket_mode_enabled";
-    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler();
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
@@ -171,10 +167,6 @@ public class PocketModeService extends SystemService {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
                     mAttached = true;
-                    if (mTimeoutHandler != null) {
-                        mTimeoutHandler.removeCallbacksAndMessages(null);
-                        mTimeoutHandler.postDelayed(mDismissOverlayRunnable, TIMEOUT_DELAY);
-                    }
                 }
             }
         };
@@ -186,9 +178,6 @@ public class PocketModeService extends SystemService {
             @Override
             public void run() {
                 if (mWindowManager != null && mAttached) {
-                    if (mTimeoutHandler != null) {
-                        mTimeoutHandler.removeCallbacksAndMessages(null);
-                    }
                     mOverlayView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                     mWindowManager.removeView(mOverlayView);
                     mAttached = false;
@@ -202,10 +191,6 @@ public class PocketModeService extends SystemService {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             mGestureDetector.onTouchEvent(event);
-            if (mTimeoutHandler != null) {
-                mTimeoutHandler.removeCallbacksAndMessages(null);
-                mTimeoutHandler.postDelayed(mDismissOverlayRunnable, TIMEOUT_DELAY);
-            }
             return true;
         }
     };
@@ -233,10 +218,6 @@ public class PocketModeService extends SystemService {
     private final SensorEventListener mPocketModeListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
-            long currentTimestamp = System.currentTimeMillis();
-            if (currentTimestamp - lastSensorEventTimestamp < 100) {
-                return;
-            }
             if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 gravityValues = sensorEvent.values.clone();
                 double gravityMagnitude = Math.sqrt(
@@ -285,16 +266,11 @@ public class PocketModeService extends SystemService {
         if (!mIsInPocket) {
             mIsInPocket = isGravityInPocket && isInclinationInPocket;
         }
-        mTimeoutHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mIsInPocket && !mIsUnlocked) {
-                    showOverlay();
-                } else {
-                    hideOverlay();
-                }
-            }
-        }, 500);
+        if (mIsInPocket && !mIsUnlocked) {
+            showOverlay();
+        } else {
+            hideOverlay();
+        }
     }
 
     @Override
