@@ -52,6 +52,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Insets;
 import android.graphics.Rect;
@@ -298,6 +299,7 @@ public class ScreenshotController {
     private final ScreenshotSoundController mScreenshotSoundController;
     private final AudioManager mAudioManager;
     private final Vibrator mVibrator;
+    private CameraManager mCameraManager = null;
     private int mCamsInUse = 0;
     private final ScrollCaptureClient mScrollCaptureClient;
     private final PhoneWindow mWindow;
@@ -349,6 +351,17 @@ public class ScreenshotController {
                     | ActivityInfo.CONFIG_UI_MODE
                     | ActivityInfo.CONFIG_SCREEN_LAYOUT
                     | ActivityInfo.CONFIG_ASSETS_PATHS);
+
+    private boolean mScreenshotSoundEnabled;
+
+    private final ContentObserver mSettingObserver = new ContentObserver(
+            new Handler(Looper.getMainLooper())) {
+        @Override
+        public void onChange(boolean selfChange) {
+            mScreenshotSoundEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.SCREENSHOT_SHUTTER_SOUND, 1, UserHandle.USER_CURRENT) == 1;
+        }
+    };
 
     private ComponentName mTaskComponentName;
     private PackageManager mPm;
@@ -487,7 +500,8 @@ public class ScreenshotController {
         if (SystemProperties.getBoolean("audio.camerasound.force", false)
                 || mContext.getResources().getBoolean(
                         com.android.internal.R.bool.config_camera_sound_forced)) {
-            mContext.getSystemService(CameraManager.class).registerAvailabilityCallback(
+            mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
+            mCameraManager.registerAvailabilityCallback(
                     mCamCallback, new Handler(Looper.getMainLooper()));
         }
 
@@ -503,6 +517,10 @@ public class ScreenshotController {
                         ClipboardOverlayController.COPY_OVERLAY_ACTION),
                 ClipboardOverlayController.SELF_PERMISSION, null, Context.RECEIVER_NOT_EXPORTED);
         mShowUIOnExternalDisplay = showUIOnExternalDisplay;
+
+        mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                Settings.System.SCREENSHOT_SHUTTER_SOUND), false, mSettingObserver);
+        mSettingObserver.onChange(false);
 
         // Grab PackageManager
         mPm = mContext.getPackageManager();
@@ -688,6 +706,10 @@ public class ScreenshotController {
         removeWindow();
         releaseMediaPlayer();
         releaseContext();
+        TaskStackChangeListeners.getInstance().unregisterTaskStackListener(mTaskListener);
+        if (mCameraManager != null) {
+            mCameraManager.unregisterAvailabilityCallback(mCamCallback);
+        }
         mBgExecutor.shutdownNow();
     }
 
@@ -696,6 +718,7 @@ public class ScreenshotController {
      */
     private void releaseContext() {
         mContext.unregisterReceiver(mCopyBroadcastReceiver);
+        mContext.getContentResolver().unregisterContentObserver(mSettingObserver);
         mContext.release();
     }
 
@@ -1364,8 +1387,7 @@ public class ScreenshotController {
     }
 
     private void playShutterSound() {
-        boolean playSound = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.SCREENSHOT_SHUTTER_SOUND, 1, UserHandle.USER_CURRENT) == 1
+        boolean playSound = mScreenshotSoundEnabled
                 && mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL;
         boolean playSoundForced = mCamsInUse > 0;
         if (playSoundForced || playSound) {
