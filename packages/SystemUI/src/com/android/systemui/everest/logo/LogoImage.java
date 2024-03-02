@@ -125,13 +125,13 @@ public abstract class LogoImage extends ImageView implements DarkReceiver {
             R.drawable.ic_amogus, R.drawable.ic_apple_logo, R.drawable.ic_avengers,
             R.drawable.ic_batman, R.drawable.ic_batman_tdk, R.drawable.ic_beats,
             R.drawable.ic_biohazard, R.drawable.ic_blackberry, R.drawable.ic_cannabis,
-            R.drawable.ic_captain_america, R.drawable.ic_fire, R.drawable.ic_flash,
-            R.drawable.ic_ghost, R.drawable.ic_heart, R.drawable.ic_ironman,
-            R.drawable.ic_mint_logo, R.drawable.ic_nike, R.drawable.ic_ninja,
-            R.drawable.ic_pac_man, R.drawable.ic_puma, R.drawable.ic_robot,
-            R.drawable.ic_rog, R.drawable.ic_spiderman, R.drawable.ic_superman,
-            R.drawable.ic_tux_logo, R.drawable.ic_ubuntu_logo, R.drawable.ic_windows,
-            R.drawable.ic_xbox
+            R.drawable.ic_captain_america, R.drawable.ic_everest,  R.drawable.ic_fire,
+            R.drawable.ic_flash, R.drawable.ic_ghost, R.drawable.ic_heart,
+            R.drawable.ic_ironman, R.drawable.ic_mint_logo, R.drawable.ic_nike,
+            R.drawable.ic_ninja, R.drawable.ic_pac_man, R.drawable.ic_puma,
+            R.drawable.ic_robot, R.drawable.ic_rog, R.drawable.ic_spiderman,
+            R.drawable.ic_superman, R.drawable.ic_tux_logo, R.drawable.ic_ubuntu_logo,
+            R.drawable.ic_windows, R.drawable.ic_xbox
         };
 
         int index = (style >= 0 && style < logoResources.length) ? style : 0;
