@@ -131,6 +131,7 @@ public class NotificationHeaderViewWrapper extends NotificationViewWrapper imple
         switch (key) {
             case QS_COLORED_ICONS:
                 mQsColoredIconsEnabled = TunerService.parseIntegerSwitch(newValue, false);
+                updateNotificationContent();
                 break;
             default:
                 break;
@@ -207,35 +208,50 @@ public class NotificationHeaderViewWrapper extends NotificationViewWrapper imple
         super.onContentUpdated(row);
         mIsLowPriority = row.getEntry().isAmbient();
         mTransformLowPriorityTitle = !row.isChildInGroup() && !row.isSummaryWithChildren();
-        ArraySet<View> previousViews = mTransformationHelper.getAllTransformingViews();
 
         // Reinspect the notification.
         resolveHeaderViews();
         updateTransformedTypes();
         addRemainingTransformTypes();
         updateCropToPaddingForImageViews();
-        Notification notification = row.getEntry().getSbn().getNotification();
-        String pkgname = row.getEntry().getSbn().getPackageName();
-        Drawable appIcon = pkgname != null ?
-                    getApplicationIcon(pkgname) : null;
-        if (appIcon != null && mWorkProfileImage != null && mQsColoredIconsEnabled) {
-            mIcon.setImageDrawable(appIcon);
-            mWorkProfileImage.setImageIcon(notification.getSmallIcon());
-            // The work profile image is always the same lets just set the icon tag for it not to
-            // animate
-            mWorkProfileImage.setTag(ImageTransformState.ICON_TAG, notification.getSmallIcon());
-        }
-        mIcon.setTag(ImageTransformState.ICON_TAG, notification.getSmallIcon());
+        
+        // Update the UI elements with the new notification content
+    	updateNotificationContent(row.getEntry().getSbn().getNotification(), row.getEntry().getSbn().getPackageName());
 
-        // We need to reset all views that are no longer transforming in case a view was previously
-        // transformed, but now we decided to transform its container instead.
-        ArraySet<View> currentViews = mTransformationHelper.getAllTransformingViews();
-        for (int i = 0; i < previousViews.size(); i++) {
-            View view = previousViews.valueAt(i);
-            if (!currentViews.contains(view)) {
-                mTransformationHelper.resetTransformedView(view);
+    }
+    
+    private void updateNotificationContent() {
+    if (mRow != null && mRow.getEntry() != null) {
+        ExpandableNotificationRow row = mRow;
+        Notification notification = row.getEntry().getSbn().getNotification();
+        String packageName = row.getEntry().getSbn().getPackageName();
+        updateNotificationContent(notification, packageName);
+       }
+    }
+    
+    private void updateNotificationContent(Notification notification, String packageName) {
+    Drawable appIcon = packageName != null ? getApplicationIcon(packageName) : null;
+    if (appIcon != null) {
+        // Check if colored icons are enabled and apply the appropriate icon
+        if (mQsColoredIconsEnabled) {
+            mIcon.setImageDrawable(appIcon);
+            if (mWorkProfileImage != null) {
+                mWorkProfileImage.setImageIcon(notification.getSmallIcon());
+                // Set the icon tag for the work profile image to prevent animation
+                mWorkProfileImage.setTag(ImageTransformState.ICON_TAG, notification.getSmallIcon());
             }
-        }
+        } else {
+            // Colored icons are disabled, use the default icon
+            mIcon.setImageIcon(notification.getSmallIcon());
+            if (mWorkProfileImage != null) {
+                // Clear any previous icon and tag to prevent unwanted animations
+                mWorkProfileImage.setImageIcon(null);
+                mWorkProfileImage.setTag(ImageTransformState.ICON_TAG, null);
+            }
+         }
+      }
+      // Invalidate the view to trigger a redraw
+      mView.invalidate();
     }
 
     private Drawable getApplicationIcon(String packageName) {
