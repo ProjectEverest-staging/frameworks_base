@@ -20,6 +20,7 @@ filegroup {
         "**/*.java",
         "**/*.aidl",
         ":framework-nfc-non-updatable-sources",
+        ":custom-utils-srcs",
     ],
     visibility: ["//frameworks/base"],
 }
