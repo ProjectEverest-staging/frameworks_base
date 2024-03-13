@@ -174,7 +174,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private ClockController mClockController;
     private StatusIconContainer mStatusIcons;
     private int mSignalClusterEndPadding = 0;
-    private boolean mShowSBClockBg;
+    private int mShowSBClockBg;
     private View mStatusBarLogo;
 
     private List<String> mBlockedIcons = new ArrayList<>();
@@ -499,8 +499,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                         mStatusIcons.getPaddingBottom());
                 break;
             case STATUSBAR_CLOCK_CHIP:
-                mShowSBClockBg = 
-                        TunerService.parseIntegerSwitch(newValue, false);
+                mShowSBClockBg =
+                        TunerService.parseInteger(newValue, 0);
                 updateStatusBarClock();
                 break;
             default:
@@ -509,13 +509,18 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     private void updateStatusBarClock() {
-        if (mShowSBClockBg) {
-            mClockView.setBackgroundResource(R.drawable.sb_date_bg);
-            mClockView.setPadding(10,2,10,2);
-            mCenterClockView.setBackgroundResource(R.drawable.sb_date_bg);
-            mCenterClockView.setPadding(10,2,10,2);
-            mRightClockView.setBackgroundResource(R.drawable.sb_date_bg);
-            mRightClockView.setPadding(10,2,10,2);
+        if (mShowSBClockBg != 0) {
+            String chipStyleUri = "sb_date_bg" + String.valueOf(mShowSBClockBg);
+            int resId = getContext().getResources().getIdentifier(chipStyleUri, "drawable", "com.android.systemui");
+            mClockView.setBackgroundResource(resId);
+            mClockView.setPadding(12,4,12,4);
+            mClockView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            mCenterClockView.setBackgroundResource(resId);
+            mCenterClockView.setPadding(12,4,12,4);
+            mCenterClockView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            mRightClockView.setBackgroundResource(resId);
+            mRightClockView.setPadding(12,4,12,4);
+            mRightClockView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         } else {
             int clockPaddingStart = getResources().getDimensionPixelSize(
                     R.dimen.status_bar_clock_starting_padding);
@@ -531,6 +536,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             mCenterClockView.setPaddingRelative(0,0,0,0);
             mRightClockView.setBackgroundResource(0);
             mRightClockView.setPaddingRelative(clockPaddingStart, 0, clockPaddingEnd, 0);
+            mClockView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            mCenterClockView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+            mRightClockView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         }
     }
 
