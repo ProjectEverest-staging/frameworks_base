@@ -7218,6 +7218,11 @@ public final class Settings {
         public static final String QS_BT_AUTO_ON = "qs_bt_auto_on";
 
         /**
+         * @hide
+         */
+        public static final String QS_PANEL_TILE_HAPTIC = "qs_panel_tile_haptic";
+
+        /**
          * These are all public system settings
          *
          * @hide
