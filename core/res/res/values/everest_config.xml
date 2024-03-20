@@ -218,5 +218,9 @@
        For example, a device with Home, Back and Menu keys would set this
        config to 7. -->
        <integer name="config_deviceHardwareWakeKeys">64</integer>
-    
+
+    <!-- StatusBarUtils default values -->
+    <dimen name="status_bar_padding_start">8dp</dimen>
+    <dimen name="status_bar_padding_end">4dp</dimen>
+    <dimen name="status_bar_padding_top">0dp</dimen>
 </resources>
