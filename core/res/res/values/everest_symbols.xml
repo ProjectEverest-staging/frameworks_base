@@ -199,4 +199,9 @@
     <!-- App lock -->
     <java-symbol type="string" name="unlock_application" />
     <java-symbol type="array" name="config_appLockAllowedSystemApps" />
+
+    <!-- StatusBarUtils default values -->
+    <java-symbol type="dimen" name="status_bar_padding_start" />
+    <java-symbol type="dimen" name="status_bar_padding_end" />
+    <java-symbol type="dimen" name="status_bar_padding_top" />
 </resources>
