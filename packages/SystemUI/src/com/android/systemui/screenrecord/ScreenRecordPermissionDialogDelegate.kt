@@ -68,6 +68,7 @@ class ScreenRecordPermissionDialogDelegate(
         R.color.screenrecord_icon_color
     ),
     SystemUIDialog.Delegate {
+    private lateinit var screenShareModeSpinner: Spinner
     private lateinit var tapsSwitch: Switch
     private lateinit var tapsView: View
     private lateinit var audioSwitch: Switch
@@ -120,6 +121,7 @@ class ScreenRecordPermissionDialogDelegate(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initRecordOptionsView() {
+        screenShareModeSpinner = dialog.requireViewById(R.id.screen_share_mode_spinner)
         audioSwitch = dialog.requireViewById(R.id.screenrecord_audio_switch)
         tapsSwitch = dialog.requireViewById(R.id.screenrecord_taps_switch)
         skipTimeSwitch = dialog.requireViewById(R.id.screenrecord_skip_time_switch)
@@ -188,6 +190,7 @@ class ScreenRecordPermissionDialogDelegate(
         lowQualitySpinner.isLongClickable = false
 
         val userContext = userContextProvider.userContext
+        screenShareModeSpinner.setSelection(Prefs.getInt(userContext, PREF_SHARE_MODE, 0))
         tapsSwitch.isChecked = Prefs.getInt(userContext, PREF_TAPS, 0) == 1
         stopDotSwitch.isChecked = Prefs.getInt(userContext, PREF_DOT, 0) == 1
         lowQualitySpinner.setSelection(Prefs.getInt(userContext, PREF_LOW, 0))
@@ -246,6 +249,7 @@ class ScreenRecordPermissionDialogDelegate(
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
 
+        Prefs.putInt(userContext, PREF_SHARE_MODE, screenShareModeSpinner.selectedItemPosition)
         Prefs.putInt(userContext, PREF_TAPS, if (showTaps) 1 else 0)
         Prefs.putInt(userContext, PREF_DOT, if (showStopDot) 1 else 0)
         Prefs.putInt(userContext, PREF_LOW, lowQuality)
@@ -286,6 +290,7 @@ class ScreenRecordPermissionDialogDelegate(
         private const val NO_DELAY: Long = 100
         private const val INTERVAL_MS: Long = 1000
 
+        private const val PREF_SHARE_MODE = "screenrecord_share_mode"
         private const val PREF_TAPS = "screenrecord_show_taps"
         private const val PREF_DOT = "screenrecord_show_dot"
         private const val PREF_LOW = "screenrecord_use_low_quality_2"
