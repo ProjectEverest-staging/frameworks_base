@@ -25,7 +25,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.android.settingslib.Utils
-import com.android.systemui.Dependency
 import com.android.systemui.animation.Expandable
 import com.android.systemui.common.shared.model.ContentDescription
 import com.android.systemui.common.shared.model.Icon
@@ -114,6 +113,7 @@ class FooterActionsViewModel(
         private val footerActionsInteractor: FooterActionsInteractor,
         private val globalActionsDialogLiteProvider: Provider<GlobalActionsDialogLite>,
         @Named(PM_LITE_ENABLED) private val showPowerButton: Boolean,
+        private val keyguardStateController: KeyguardStateController
     ) {
         /** Create a [FooterActionsViewModel] bound to the lifecycle of [lifecycleOwner]. */
         fun create(lifecycleOwner: LifecycleOwner): FooterActionsViewModel {
@@ -139,6 +139,7 @@ class FooterActionsViewModel(
                 falsingManager,
                 globalActionsDialogLite,
                 showPowerButton,
+                keyguardStateController,
             )
         }
     }
@@ -150,6 +151,7 @@ fun FooterActionsViewModel(
     falsingManager: FalsingManager,
     globalActionsDialogLite: GlobalActionsDialogLite,
     showPowerButton: Boolean,
+    keyguardStateController: KeyguardStateController
 ): FooterActionsViewModel {
     suspend fun observeDeviceMonitoringDialogRequests(quickSettingsContext: Context) {
         footerActionsInteractor.deviceMonitoringDialogRequests.collect {
@@ -193,8 +195,7 @@ fun FooterActionsViewModel(
     }
 
     fun onPowerButtonClicked(expandable: Expandable) {
-        val mKeyguard = Dependency.get(KeyguardStateController::class.java)
-        if (mKeyguard.isShowing() && mKeyguard.isMethodSecure() 
+        if (keyguardStateController.isShowing() && keyguardStateController.isMethodSecure() 
                 && Settings.System.getIntForUser(appContext.getContentResolver(),
                 Settings.System.LOCKSCREEN_ENABLE_POWER_MENU, 1, UserHandle.USER_CURRENT) == 0) {
             return
