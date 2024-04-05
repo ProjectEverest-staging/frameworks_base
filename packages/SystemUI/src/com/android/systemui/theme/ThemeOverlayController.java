@@ -187,6 +187,7 @@ public class ThemeOverlayController implements CoreStartable, Dumpable, TunerSer
     private DynamicScheme mDynamicSchemeDark;
     private DynamicScheme mDynamicSchemeLight;
     private final TunerService mTunerService;
+    private final EverestThemeController mThemeController;
 
     // Defers changing themes until Setup Wizard is done.
     private boolean mDeferredThemeEvaluation;
@@ -477,6 +478,7 @@ public class ThemeOverlayController implements CoreStartable, Dumpable, TunerSer
         mActivityManager = activityManager;
         mTunerService = tunerService;
         dumpManager.registerDumpable(TAG, this);
+        mThemeController = new EverestThemeController(mContext.getContentResolver(), mBgHandler);
     }
 
     @Override
