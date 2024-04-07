@@ -29,7 +29,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.settingslib.Utils;
-import com.android.systemui.R;
+import com.android.systemui.res.R;
 
 public class NotificationLightsView extends RelativeLayout {
     private static final boolean DEBUG = false;
