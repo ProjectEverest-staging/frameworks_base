@@ -1679,20 +1679,20 @@ public class UserManagerService extends IUserManager.Stub {
         synchronized (mPackagesLock) {
             synchronized (mUsersLock) {
                 info = getUserInfoLU(userId);
+                if (info == null) {
+                    // Exit if no user found with that id,
+                    mUserJourneyLogger.logNullUserJourneyError(USER_JOURNEY_GRANT_ADMIN,
+                            getCurrentUserId(), userId, /* userType */ "", /* userFlags */ -1);
+                    return;
+                } else if (info.isAdmin()) {
+                    // Exit if the user is already an Admin.
+                    mUserJourneyLogger.logUserJourneyFinishWithError(getCurrentUserId(), info,
+                            USER_JOURNEY_GRANT_ADMIN, ERROR_CODE_USER_ALREADY_AN_ADMIN);
+                    return;
+                }
+                info.flags ^= UserInfo.FLAG_ADMIN;
+                writeUserLP(getUserDataLU(info.id));
             }
-            if (info == null) {
-                // Exit if no user found with that id,
-                mUserJourneyLogger.logNullUserJourneyError(USER_JOURNEY_GRANT_ADMIN,
-                        getCurrentUserId(), userId, /* userType */ "", /* userFlags */ -1);
-                return;
-            } else if (info.isAdmin()) {
-                // Exit if the user is already an Admin.
-                mUserJourneyLogger.logUserJourneyFinishWithError(getCurrentUserId(), info,
-                        USER_JOURNEY_GRANT_ADMIN, ERROR_CODE_USER_ALREADY_AN_ADMIN);
-                return;
-            }
-            info.flags ^= UserInfo.FLAG_ADMIN;
-            writeUserLP(getUserDataLU(info.id));
         }
         mUserJourneyLogger.logUserJourneyFinishWithError(getCurrentUserId(), info,
                 USER_JOURNEY_GRANT_ADMIN, ERROR_CODE_UNSPECIFIED);
