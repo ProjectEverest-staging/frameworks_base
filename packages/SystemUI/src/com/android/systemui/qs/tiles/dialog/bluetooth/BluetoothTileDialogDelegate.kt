@@ -69,6 +69,7 @@ internal constructor(
     private val logger: BluetoothTileDialogLogger,
     private val systemuiDialogFactory: SystemUIDialog.Factory,
     mainLayoutInflater: LayoutInflater,
+    private val isAutoOn: Boolean = false,
 ) : SystemUIDialog.Delegate {
 
     private val layoutInflater = mainLayoutInflater.cloneInContext(context)
@@ -145,6 +146,10 @@ internal constructor(
 
     override fun onStart(dialog: SystemUIDialog) {
         lastUiUpdateMs = systemClock.elapsedRealtime()
+        if (isAutoOn && !bluetoothToggleInitialValue) {
+            toggleView.isChecked = true
+            mutableBluetoothStateToggle.value = true
+        }
     }
 
     override fun onStop(dialog: SystemUIDialog) {
