@@ -121,6 +121,14 @@
     <!-- Screenshot Tile -->
     <string name="screenshot_long_press">Long press - selected region</string>
 
+    <!-- Sound Engine -->
+    <string name="sound_engine_tile_label">Sound Engine</string>
+    <string name="sound_engine_mode_disabled_label">Disabled</string>
+    <string name="sound_engine_mode_smart_label">Smart</string>
+    <string name="sound_engine_mode_music_label">Music</string>
+    <string name="sound_engine_mode_theater_label">Theater</string>
+    <string name="sound_engine_mode_game_label">Game</string>
+
     <!-- Refresh Rate Tile -->
     <string name="refresh_rate_tile_label">Refresh rate</string>
     <string name="auto_mode_label">Auto</string>
