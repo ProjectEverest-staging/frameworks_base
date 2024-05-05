@@ -27,6 +27,7 @@
             android:paddingHorizontal="12dp"
             android:background="@drawable/custom_inner_preference_background"
             android:fontFamily="@*android:string/config_headlineFontFamily"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             style="@style/PreferenceCategoryTitleTextStyle"/>
 
     </RelativeLayout>
