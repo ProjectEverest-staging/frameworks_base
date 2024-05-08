@@ -171,7 +171,6 @@ constructor(
         header.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     private val networkTraffic: NetworkTraffic? = header.findViewById(R.id.networkTraffic)
 
-    private var roundedCorners = 0
     private var cutout: DisplayCutout? = null
     private var lastInsets: WindowInsets? = null
     private var nextAlarmIntent: PendingIntent? = null
@@ -643,7 +642,6 @@ constructor(
     }
 
     private fun updateResources() {
-        roundedCorners = resources.getDimensionPixelSize(R.dimen.rounded_corner_content_padding)
         val padding = resources.getDimensionPixelSize(R.dimen.qs_panel_padding)
         header.setPadding(padding, header.paddingTop, padding, header.paddingBottom)
         updateQQSPaddings()
