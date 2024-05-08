@@ -100,7 +100,6 @@ public class KeyguardStatusBarView extends RelativeLayout {
     private int mCutoutSideNudge = 0;
 
     private DisplayCutout mDisplayCutout;
-    private int mRoundedCornerPadding = 0;
     // right and left padding applied to this view to account for cutouts and rounded corners
     private Insets mPadding = Insets.of(0, 0, 0, 0);
 
