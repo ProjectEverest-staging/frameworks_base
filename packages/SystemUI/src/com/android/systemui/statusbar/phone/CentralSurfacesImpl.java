@@ -249,6 +249,7 @@ import com.android.systemui.statusbar.window.StatusBarWindowController;
 import com.android.systemui.statusbar.window.StatusBarWindowStateController;
 import com.android.systemui.surfaceeffects.ripple.RippleShader.RippleShape;
 import com.android.systemui.tuner.TunerService;
+import com.android.systemui.util.BatteryHealthNotification;
 import com.android.systemui.util.DumpUtilsKt;
 import com.android.systemui.util.WallpaperController;
 import com.android.systemui.util.concurrency.DelayableExecutor;
@@ -475,6 +476,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
     private final TunerService mTunerService;
 
     protected GameSpaceManager mGameSpaceManager;
+    private final BatteryHealthNotification mBatteryHealthNotification;
 
     /** Controller for the Shade. */
     private final ShadeSurface mShadeSurface;
@@ -924,6 +926,9 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
         if (predictiveBackSysui()) {
             mContext.getApplicationInfo().setEnableOnBackInvokedCallback(true);
         }
+
+        mBatteryHealthNotification = new BatteryHealthNotification(mContext);
+        mBatteryHealthNotification.start();
     }
 
     private void initBubbles(Bubbles bubbles) {
