@@ -21,20 +21,29 @@ import android.os.AsyncTask;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class VibrationUtils {
 
-    public static void triggerVibration(Context context, int intensity) {
-        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (vibrator == null || intensity == 0) {
-            return;
-        }
+    private static Executor executor = Executors.newSingleThreadExecutor();
 
-        VibrationEffect effect = createVibrationEffect(intensity);
-        if (effect == null) {
-            return;
-        }
-
-        AsyncTask.execute(() -> vibrator.vibrate(effect));
+    public static void triggerVibration(final Context context, final int intensity) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                if (vibrator == null || intensity == 0) {
+                    return;
+                }
+                VibrationEffect effect = createVibrationEffect(intensity);
+                if (effect == null) {
+                    return;
+                }
+                vibrator.cancel();
+                vibrator.vibrate(effect);
+            }
+        });
     }
 
     private static VibrationEffect createVibrationEffect(int intensity) {
