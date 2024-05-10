@@ -131,7 +131,7 @@ open class QSTileViewImpl @JvmOverloads constructor(
     private var initialX = 0f
     private var initialY = 0f
 
-    private val colorActive = Utils.getColorAttrDefaultColor(context, R.attr.shadeActive)
+    private val colorActive = Utils.getColorAttrDefaultColor(context, com.android.internal.R.attr.colorAccent)
     private val colorOffstate = Utils.getColorAttrDefaultColor(context, com.android.internal.R.attr.colorSurface) 
     private val colorInactive = if (isA11Style) Utils.applyAlpha(INACTIVE_ALPHA, colorOffstate)
             else colorOffstate
@@ -163,7 +163,7 @@ open class QSTileViewImpl @JvmOverloads constructor(
         Utils.getColorAttrDefaultColor(context, R.attr.outline)
 
     // QS Style 2
-    private val colorActiveAlpha = Utils.applyAlpha(ACTIVE_ALPHA, Utils.getColorAttrDefaultColor(context, R.attr.shadeActive))
+    private val colorActiveAlpha = Utils.applyAlpha(ACTIVE_ALPHA, Utils.getColorAttrDefaultColor(context, com.android.internal.R.attr.colorAccent))
     private val colorInactiveAlpha = resources.getColor(R.color.qs_translucent_bg)
 
     // QS Style 3
