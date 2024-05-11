@@ -13302,12 +13302,6 @@ public final class Settings {
         public static final String SCREEN_OFF_UDFPS_ENABLED = "screen_off_udfps_enabled";
 
         /**
-         * Whether to turn on black theme
-         * @hide
-         */
-        public static final String SYSTEM_BLACK_THEME = "system_black_theme";
-
-        /**
          * Whether to show privacy indicator for location
          * @hide
          */
