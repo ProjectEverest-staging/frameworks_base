@@ -246,6 +246,7 @@ public final class ProfcollectForwardingService extends SystemService {
                                     + e.getMessage());
                         }
                     });
+            jobFinished(params, false);
             return true;
         }
 
