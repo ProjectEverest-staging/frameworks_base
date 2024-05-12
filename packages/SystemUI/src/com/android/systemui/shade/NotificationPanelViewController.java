@@ -4817,7 +4817,7 @@ public final class NotificationPanelViewController implements ShadeSurface, Dump
         public void onTuningChanged(String key, String newValue) {
             switch (key) {
                 case STATUS_BAR_QUICK_QS_PULLDOWN:
-                    mOneFingerQuickSettingsIntercept = TunerService.parseInteger(newValue, 1);
+                    mOneFingerQuickSettingsIntercept = TunerService.parseInteger(newValue, 0);
                     break;
                 case DOUBLE_TAP_SLEEP_GESTURE:
                    mDoubleTapToSleepEnabled = TunerService.parseIntegerSwitch(newValue, true);
