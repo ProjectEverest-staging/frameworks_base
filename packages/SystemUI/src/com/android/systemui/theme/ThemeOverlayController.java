@@ -473,6 +473,7 @@ public class ThemeOverlayController implements CoreStartable, Dumpable {
         mThemeController.observe("lockscreen_widgets_enabled", true /* system */, () -> reevaluateSystemTheme(true));
         mThemeController.observe("lockscreen_widgets", true /* system */, () -> reevaluateSystemTheme(true));
         mThemeController.observe("lockscreen_widgets_extras", true /* system */, () -> reevaluateSystemTheme(true));
+        mThemeController.observe("user_selected_resolution", true /* system */, () -> reevaluateSystemTheme(true));
         mBroadcastDispatcher.registerReceiver(mBroadcastReceiver, filter, mMainExecutor,
                 UserHandle.ALL);
         mSecureSettings.registerContentObserverForUser(
