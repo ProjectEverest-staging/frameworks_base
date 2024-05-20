@@ -374,9 +374,9 @@ public class OomAdjuster {
     final ActivityManagerGlobalLock mProcLock;
 
     // Min aging threshold in milliseconds to consider a B-service
-    int mMinBServiceAgingTime = 5000;
+    int mMinBServiceAgingTime = 10000;
     // Threshold for B-services when in memory pressure
-    int mBServiceAppThreshold = 5;
+    int mBServiceAppThreshold = 48;
 
     private final int mNumSlots;
     protected final ArrayList<ProcessRecord> mTmpProcessList = new ArrayList<ProcessRecord>();
