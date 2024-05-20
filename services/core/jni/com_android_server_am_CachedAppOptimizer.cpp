@@ -350,7 +350,6 @@ static int getAnyPageAdvice(const Vma& vma) {
     if (inSystemCompaction == true) {
         return MADV_PAGEOUT;
     }
-
     if (vma.inode == 0) {
         return MADV_PAGEOUT;
     }
