@@ -454,12 +454,10 @@ class SystemGesturesPointerEventListener implements PointerEventListener {
                 mCallbacks.onVerticalFling(duration);
             else
                 mCallbacks.onHorizontalFling(duration);
-
             mLastFlingTime = now;
             mCallbacks.onFling(duration);
             return true;
         }
-
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                    float distanceX, float distanceY) {

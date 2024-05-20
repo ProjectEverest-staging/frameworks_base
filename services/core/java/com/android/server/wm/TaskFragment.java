@@ -87,9 +87,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.HardwareBuffer;
-import android.hardware.power.Boost;
 import android.os.IBinder;
-import android.os.PowerManagerInternal;
 import android.os.UserHandle;
 import android.util.DisplayMetrics;
 import android.util.Slog;
@@ -105,7 +103,6 @@ import android.window.TaskFragmentOrganizerToken;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.protolog.common.ProtoLog;
-import com.android.server.LocalServices;
 import com.android.server.am.HostingRecord;
 import com.android.server.pm.pkg.AndroidPackage;
 import com.android.window.flags.Flags;
@@ -118,6 +115,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import android.util.RisingBoostFramework;
 
 /**
  * A basic container that can be used to contain activities or other {@link TaskFragment}, which
@@ -201,6 +200,8 @@ class TaskFragment extends WindowContainer<WindowContainer> {
     final ActivityTaskSupervisor mTaskSupervisor;
     final RootWindowContainer mRootWindowContainer;
     private final TaskFragmentOrganizerController mTaskFragmentOrganizerController;
+    
+    public RisingBoostFramework mPerf = null;
 
     // TODO(b/233177466): Move mMinWidth and mMinHeight to Task and remove usages in TaskFragment
     /**
@@ -1406,6 +1407,9 @@ class TaskFragment extends WindowContainer<WindowContainer> {
         // to ignore it when computing the desired screen orientation.
         boolean anim = true;
         final DisplayContent dc = taskDisplayArea.mDisplayContent;
+        
+        mPerf = RisingBoostFramework.getInstance();
+
         if (prev != null) {
             if (prev.finishing) {
                 if (DEBUG_TRANSITION) {
@@ -1415,6 +1419,9 @@ class TaskFragment extends WindowContainer<WindowContainer> {
                     anim = false;
                     dc.prepareAppTransition(TRANSIT_NONE);
                 } else {
+                    if(prev.getTask() != next.getTask() && mPerf != null) {
+                       mPerf.perfBoost(RisingBoostFramework.WorkloadType.ANIMATION);
+                    }
                     dc.prepareAppTransition(TRANSIT_CLOSE);
                 }
                 prev.setVisibility(false);
@@ -1426,6 +1433,9 @@ class TaskFragment extends WindowContainer<WindowContainer> {
                     anim = false;
                     dc.prepareAppTransition(TRANSIT_NONE);
                 } else {
+                    if(prev.getTask() != next.getTask() && mPerf != null) {
+                       mPerf.perfBoost(RisingBoostFramework.WorkloadType.ANIMATION);
+                    }
                     dc.prepareAppTransition(TRANSIT_OPEN,
                             next.mLaunchTaskBehind ? TRANSIT_FLAG_OPEN_BEHIND : 0);
                 }
@@ -1437,9 +1447,7 @@ class TaskFragment extends WindowContainer<WindowContainer> {
                 dc.prepareAppTransition(TRANSIT_NONE);
             } else {
                 dc.prepareAppTransition(TRANSIT_OPEN);
-                if (next != null) {
-                    doActivityBoost();
-                }
+                mPerf.perfBoost(RisingBoostFramework.WorkloadType.ANIMATION);
             }
         }
 
@@ -1632,13 +1640,6 @@ class TaskFragment extends WindowContainer<WindowContainer> {
         }
 
         return true;
-    }
-
-    protected void doActivityBoost() {
-        PowerManagerInternal mPowerManagerInternal = LocalServices.getService(PowerManagerInternal.class);
-        if (mPowerManagerInternal != null) {
-            mPowerManagerInternal.setPowerBoost(Boost.DISPLAY_UPDATE_IMMINENT, 80);
-        }
     }
 
     boolean shouldSleepOrShutDownActivities() {

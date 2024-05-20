@@ -53,6 +53,7 @@ import static android.view.WindowManager.TRANSIT_TO_FRONT;
 
 import static com.android.internal.protolog.ProtoLogGroup.WM_DEBUG_STATES;
 import static com.android.internal.protolog.ProtoLogGroup.WM_DEBUG_TASKS;
+import static com.android.server.wm.ActivityRecord.State.DESTROYED;
 import static com.android.server.wm.ActivityRecord.State.PAUSED;
 import static com.android.server.wm.ActivityRecord.State.PAUSING;
 import static com.android.server.wm.ActivityRecord.State.RESTARTING_PROCESS;
@@ -139,6 +140,8 @@ import android.util.MergedConfiguration;
 import android.util.Slog;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
+import android.util.RisingBoostFramework;
+import com.android.internal.app.procstats.ProcessStats;
 import android.view.Display;
 
 import com.android.internal.R;
@@ -163,6 +166,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import java.util.Arrays;
+import android.os.AsyncTask;
+
 // TODO: This class has become a dumping ground. Let's
 // - Move things relating to the hierarchy to RootWindowContainer
 // - Move things relating to activity life cycles to maybe a new class called ActivityLifeCycler
@@ -185,6 +191,9 @@ public class ActivityTaskSupervisor implements RecentTasks.Callbacks {
 
     // How long we can hold the launch wake lock before giving up.
     private static final int LAUNCH_TIMEOUT = 10 * 1000 * Build.HW_TIMEOUT_MULTIPLIER;
+
+    public RisingBoostFramework mPerfBoost = RisingBoostFramework.getInstance();
+    public static boolean mPerfSendTapHint = false;
 
     // How long we delay processing the stopping and finishing activities.
     private static final int SCHEDULE_FINISHING_STOPPING_ACTIVITY_MS = 200;
@@ -253,7 +262,7 @@ public class ActivityTaskSupervisor implements RecentTasks.Callbacks {
     private static final int MAX_TASK_IDS_PER_USER = UserHandle.PER_USER_RANGE;
 
     final ActivityTaskManagerService mService;
-    RootWindowContainer mRootWindowContainer;
+    public RootWindowContainer mRootWindowContainer;
 
     /** Helper class for checking if an activity transition meets security rules */
     BackgroundActivityStartController mBalController;
@@ -778,7 +787,7 @@ public class ActivityTaskSupervisor implements RecentTasks.Callbacks {
         }
     }
 
-    ActivityInfo resolveActivity(Intent intent, String resolvedType, int startFlags,
+    public ActivityInfo resolveActivity(Intent intent, String resolvedType, int startFlags,
             ProfilerInfo profilerInfo, int userId, int filterCallingUid, int callingPid) {
         final ResolveInfo rInfo = resolveIntent(intent, resolvedType, userId, 0,
                 filterCallingUid, callingPid);
@@ -1074,6 +1083,9 @@ public class ActivityTaskSupervisor implements RecentTasks.Callbacks {
         boolean knownToBeDead = false;
         if (wpc != null && wpc.hasThread()) {
             try {
+                if (mPerfBoost != null) {
+                    mPerfBoost.perfBoost(RisingBoostFramework.WorkloadType.LAUNCH);
+                }
                 realStartActivityLocked(r, wpc, andResume, checkConfig);
                 return;
             } catch (RemoteException e) {
@@ -1493,6 +1505,16 @@ public class ActivityTaskSupervisor implements RecentTasks.Callbacks {
     void findTaskToMoveToFront(Task task, int flags, ActivityOptions options, String reason,
             boolean forceNonResizeable) {
         Task currentRootTask = task.getRootTask();
+
+        Task focusedStack = mRootWindowContainer.getTopDisplayFocusedRootTask();
+        ActivityRecord top_activity = focusedStack != null ? focusedStack.getTopNonFinishingActivity() : null;
+
+        //top_activity = task.stack.topRunningActivityLocked();
+        /* App is launching from recent apps and it's a new process */
+        if((top_activity != null) && (top_activity.getState() == DESTROYED)) {
+            acquireAppLaunchPerfLock(top_activity);
+        }
+
         if (currentRootTask == null) {
             Slog.e(TAG, "findTaskToMoveToFront: can't move task="
                     + task + " to front. Root task is null");
@@ -1996,6 +2018,31 @@ public class ActivityTaskSupervisor implements RecentTasks.Callbacks {
         return timedout;
     }
 
+    void acquireAppLaunchPerfLock(ActivityRecord r) {
+        /* Acquire perf lock during new app launch */
+        if (mPerfBoost != null) {
+            int wpcPid = -1;
+            if (mService != null && r != null && r.info != null && r.info.applicationInfo !=null) {
+                final WindowProcessController wpc =
+                        mService.getProcessController(r.processName, r.info.applicationInfo.uid);
+                if (wpc != null && wpc.hasThread()) {
+                   //If target process didn't start yet, this operation will be done when app call attach
+                   wpcPid = wpc.getPid();
+                }
+            }
+            mPerfBoost.perfBoost(RisingBoostFramework.WorkloadType.LAUNCH);
+            mPerfSendTapHint = true;
+            if (wpcPid != -1) {
+                mPerfBoost.perfBoost(RisingBoostFramework.WorkloadType.LOADING);
+            }
+            if (mPerfBoost.isPackageOnGameList(r.packageName)) {
+                mPerfBoost.perfBoost(RisingBoostFramework.WorkloadType.GAME);
+            } else {
+                mPerfBoost.perfBoost(RisingBoostFramework.WorkloadType.ANIMATION);
+            }
+        }
+    }
+    
     public ActivityRecord getTopResumedActivity() {
         return mTopResumedActivity;
     }
