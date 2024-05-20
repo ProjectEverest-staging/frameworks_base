@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import com.android.systemui.Dumpable;
 import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.dagger.SysUISingleton;
+import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.dump.DumpManager;
 import com.android.systemui.settings.UserTracker;
@@ -67,7 +68,7 @@ public class NextAlarmControllerImpl extends BroadcastReceiver
      */
     @Inject
     public NextAlarmControllerImpl(
-            @Main Executor mainExecutor,
+            @Background Executor backgroundExecutor,
             AlarmManager alarmManager,
             BroadcastDispatcher broadcastDispatcher,
             DumpManager dumpManager,
@@ -80,8 +81,7 @@ public class NextAlarmControllerImpl extends BroadcastReceiver
         broadcastDispatcher.registerReceiver(this, filter, null, UserHandle.ALL);
         mHandlerThread = new HandlerThread("NextAlarmControllerImpl");
         mHandlerThread.start();
-        mUserTracker.addCallback(mUserChangedCallback,
-                    new HandlerExecutor(mHandlerThread.getThreadHandler()));
+        mUserTracker.addCallback(mUserChangedCallback, backgroundExecutor);
         updateNextAlarm();
     }
 

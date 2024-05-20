@@ -32,6 +32,7 @@ import com.android.internal.logging.UiEventLogger;
 import com.android.systemui.GuestResetOrExitSessionReceiver.ResetSessionDialogFactory;
 import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.dagger.SysUISingleton;
+import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.qs.QSUserSwitcherEvent;
 import com.android.systemui.settings.UserTracker;
@@ -58,12 +59,11 @@ public class GuestResumeSessionReceiver {
 
     @VisibleForTesting
     public AlertDialog mNewSessionDialog;
-    private final Executor mMainExecutor;
+    private final Executor mBgExecutor;
     private final UserTracker mUserTracker;
     private final SecureSettings mSecureSettings;
     private final ResetSessionDialogFactory mResetSessionDialogFactory;
     private final GuestSessionNotification mGuestSessionNotification;
-    private final HandlerThread mHandlerThread;
 
     @VisibleForTesting
     public final UserTracker.Callback mUserChangedCallback =
@@ -104,26 +104,23 @@ public class GuestResumeSessionReceiver {
 
     @Inject
     public GuestResumeSessionReceiver(
-            @Main Executor mainExecutor,
+            @Background Executor backgroundExecutor,
             UserTracker userTracker,
             SecureSettings secureSettings,
             GuestSessionNotification guestSessionNotification,
             ResetSessionDialogFactory resetSessionDialogFactory) {
-        mMainExecutor = mainExecutor;
+        mBgExecutor = backgroundExecutor;
         mUserTracker = userTracker;
         mSecureSettings = secureSettings;
         mGuestSessionNotification = guestSessionNotification;
         mResetSessionDialogFactory = resetSessionDialogFactory;
-        mHandlerThread = new HandlerThread("GuestResumeSessionReceiver");
-        mHandlerThread.start();
     }
 
     /**
      * Register this receiver with the {@link BroadcastDispatcher}
      */
     public void register() {
-        mUserTracker.addCallback(mUserChangedCallback,
-                  new HandlerExecutor(mHandlerThread.getThreadHandler()));
+        mUserTracker.addCallback(mUserChangedCallback, mBgExecutor);
     }
 
     private void cancelDialog() {
