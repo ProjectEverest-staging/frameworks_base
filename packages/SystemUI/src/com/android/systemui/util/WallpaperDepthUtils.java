@@ -199,7 +199,7 @@ public class WallpaperDepthUtils {
         mLockScreenSubject.post(() -> mLockScreenSubject.setVisibility(subjectVisibility));
     }
     
-    private void hideDepthWallpaper() {
+    public void hideDepthWallpaper() {
         if (mLockScreenSubject.getVisibility() == View.GONE) return;
         mLockScreenSubject.post(() -> mLockScreenSubject.setVisibility(View.GONE));
     }
