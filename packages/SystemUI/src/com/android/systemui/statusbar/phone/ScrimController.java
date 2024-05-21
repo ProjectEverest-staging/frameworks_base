@@ -501,9 +501,8 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, Dump
         if (mScrimBehind == null || mNotificationsScrim == null) {
             return;
         }
-        int cornerRadius = mCustomScrimAlpha < 1f ? 0 : radius;
-        mScrimBehind.setCornerRadius(cornerRadius);
-        mNotificationsScrim.setCornerRadius(cornerRadius);
+        mScrimBehind.setCornerRadius(radius);
+        mNotificationsScrim.setCornerRadius(radius);
     }
 
     void setScrimVisibleListener(Consumer<Integer> listener) {
