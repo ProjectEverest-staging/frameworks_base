@@ -127,4 +127,7 @@
     <string name="notification_title_high_battery">Healthy Charge - Unplug charger</string>
     <string name="notification_content_low_battery">For better battery health. Please charge your device now.</string>
     <string name="notification_content_high_battery">Battery charge level has reached the healthy threshold. Please unplug the charger.</string>
+
+    <!-- System Theme Re-evaluation Toast -->
+    <string name="reevaluating_system_theme">Re-evaluating system theme.. Please wait for a few seconds</string>
 </resources>

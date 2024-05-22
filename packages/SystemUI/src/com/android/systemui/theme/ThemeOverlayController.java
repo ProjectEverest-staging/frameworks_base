@@ -478,7 +478,7 @@ public class ThemeOverlayController implements CoreStartable, Dumpable, TunerSer
         mActivityManager = activityManager;
         mTunerService = tunerService;
         dumpManager.registerDumpable(TAG, this);
-        mThemeController = new EverestThemeController(mContext.getContentResolver(), mBgHandler);
+        mThemeController = new EverestThemeController(mContext, mBgHandler);
     }
 
     @Override
