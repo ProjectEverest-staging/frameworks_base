@@ -67,6 +67,8 @@ import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.statusbar.policy.RemoteInputQuickSettingsDisabler;
 import com.android.systemui.statusbar.policy.SecureLockscreenQSDisabler;
 
+import com.android.internal.util.android.VibrationUtils;
+
 import dagger.Lazy;
 
 import java.util.Arrays;
@@ -316,7 +318,7 @@ public class CentralSurfacesCommandQueueCallbacks implements CommandQueue.Callba
             mMetricsLogger.action(MetricsEvent.ACTION_SYSTEM_NAVIGATION_KEY_DOWN);
             if (mShadeViewController.isFullyCollapsed()) {
                 if (mVibrateOnOpening) {
-                    vibrateOnNavigationKeyDown();
+                    VibrationUtils.triggerVibration(mContext, 2);
                 }
                 mShadeController.animateExpandShade();
                 mNotificationStackScrollLayoutController.setWillExpand(true);
