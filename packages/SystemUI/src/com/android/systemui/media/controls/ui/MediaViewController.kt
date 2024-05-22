@@ -18,6 +18,8 @@ package com.android.systemui.media.controls.ui
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.UserHandle
+import android.provider.Settings
 import androidx.annotation.VisibleForTesting
 import androidx.constraintlayout.widget.ConstraintSet
 import com.android.app.tracing.traceSection
@@ -127,6 +129,11 @@ constructor(
         get() {
             return transitionLayout?.translationY ?: 0.0f
         }
+
+    private val isCompactMode: Boolean = Settings.System.getIntForUser(
+            context.contentResolver,
+            "qs_compact_media_player_mode", 1, UserHandle.USER_CURRENT
+        ) != 0
 
     /** A callback for config changes */
     private val configurationListener =
@@ -273,8 +280,8 @@ constructor(
     }
 
     /** Get the constraintSet for a given expansion */
-    private fun constraintSetForExpansion(expansion: Float): ConstraintSet =
-        if (expansion > 0) expandedLayout else collapsedLayout
+    private fun constraintSetForExpansion(expansion: Float): ConstraintSet = 
+        if (isCompactMode) collapsedLayout else expandedLayout
 
     /**
      * Set the views to be showing/hidden based on the [isGutsVisible] for a given
