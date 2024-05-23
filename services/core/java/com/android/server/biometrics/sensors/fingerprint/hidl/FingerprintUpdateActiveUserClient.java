@@ -113,6 +113,11 @@ public class FingerprintUpdateActiveUserClient extends HalClientMonitor<IBiometr
 
     @Override
     protected void startHalOperation() {
+        if (getFreshDaemon() == null) {
+            Slog.e(TAG, "Daemon is null. Unable to setActiveGroup.");
+            mCallback.onClientFinished(this, false /* success */);
+            return;
+        }
         try {
             final int targetId = getTargetUserId();
             Slog.d(TAG, "Setting active user: " + targetId);
