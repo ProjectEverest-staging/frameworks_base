@@ -102,9 +102,11 @@ public class UdfpsDialogMeasureAdapter {
             float scaleFactor) {
         final WindowMetrics windowMetrics = mWindowManager.getMaximumWindowMetrics();
 
+        
         // Figure out where the bottom of the sensor anim should be.
-        final int textIndicatorHeight = getViewHeightPx(R.id.indicator);
-        final int buttonBarHeight = getViewHeightPx(R.id.button_bar);
+        final boolean isLowUdfps = mView.getResources().getBoolean(R.bool.config_udfpsPositionBottom);
+        final int textIndicatorHeight = isLowUdfps ? 0 : getViewHeightPx(R.id.indicator);
+        final int buttonBarHeight = isLowUdfps ? 0 : getViewHeightPx(R.id.button_bar);
         final int dialogMargin = getDialogMarginPx();
         final int displayHeight = getMaximumWindowBounds(windowMetrics).height();
         final Insets navbarInsets = getNavbarInsets(windowMetrics);
