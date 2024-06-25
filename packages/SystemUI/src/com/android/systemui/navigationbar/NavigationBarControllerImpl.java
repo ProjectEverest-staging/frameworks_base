@@ -148,7 +148,6 @@ public class NavigationBarControllerImpl implements
                 navBarHelper, navigationModeController, sysUiFlagsContainer,
                 dumpManager, autoHideController, lightBarController, pipOptional,
                 backAnimation.orElse(null), taskStackChangeListeners);
-        overviewProxyService.addCallback(this);
         mIsPhone =
                 mContext.getResources().getIntArray(R.array.config_foldedDeviceStates).length == 0;
         dumpManager.registerDumpable(this);
@@ -274,9 +273,8 @@ public class NavigationBarControllerImpl implements
 
     /** @return {@code true} if taskbar is enabled, false otherwise */
     private boolean initializeTaskbarIfNecessary() {
-        // Enable for large screens or (phone AND flag is set); assuming phone = !mTaskbarShowing
-        boolean taskbarEnabled = (shouldShowTaskbar() || enableTaskbarNavbarUnification())
-                && shouldCreateNavBarAndTaskBar(mContext.getDisplayId());
+        boolean taskbarEnabled = supportsTaskbar() && shouldCreateNavBarAndTaskBar(
+                mContext.getDisplayId());
 
         if (taskbarEnabled) {
             Trace.beginSection("NavigationBarController#initializeTaskbarIfNecessary");
@@ -298,7 +296,7 @@ public class NavigationBarControllerImpl implements
     @VisibleForTesting
     boolean supportsTaskbar() {
         // Enable for tablets, unfolded state on a foldable device or (non handheld AND flag is set)
-        return mIsLargeScreen || (!mIsPhone && enableTaskbarNavbarUnification());
+        return shouldShowTaskbar() || (!mIsPhone && enableTaskbarNavbarUnification());
     }
 
     private final CommandQueue.Callbacks mCommandQueueCallbacks = new CommandQueue.Callbacks() {
