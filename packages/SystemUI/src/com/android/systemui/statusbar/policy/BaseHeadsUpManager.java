@@ -672,6 +672,13 @@ public abstract class BaseHeadsUpManager implements HeadsUpManager {
         protected boolean mExpanded;
         protected boolean mWasUnpinned;
 
+        public void updateEntry(boolean updatePostTime) {
+          mAutoDismissTime = Settings.System.getIntForUser(mContext.getContentResolver(),
+              Settings.System.HEADS_UP_TIMEOUT,
+              mContext.getResources().getInteger(R.integer.heads_up_notification_decay),
+              UserHandle.USER_CURRENT);
+        }
+
         @Nullable public NotificationEntry mEntry;
         public long mPostTime;
         public long mEarliestRemovalTime;
@@ -723,14 +730,6 @@ public abstract class BaseHeadsUpManager implements HeadsUpManager {
             final long finishTime = calculateFinishTime();
             final long timeLeft = Math.max(finishTime - now, mMinimumDisplayTime);
             scheduleAutoRemovalCallback(timeLeft, "updateEntry (not sticky)");
-        }
-
-        public void updateEntry(boolean updatePostTime) {
-            mAutoDismissTime = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.HEADS_UP_TIMEOUT,
-                mContext.getResources().getInteger(R.integer.heads_up_notification_decay),
-                UserHandle.USER_CURRENT);
-            super.updateEntry(updatePostTime, "updateEntry");
         }
 
         /**
