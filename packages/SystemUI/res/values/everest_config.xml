@@ -84,7 +84,4 @@
 
     <!-- Whether to disable Smart Pixels on UDFPS -->
     <bool name="config_disableSmartPixelsOnUDFPS">false</bool>
-
-    <!-- Config to denote that our udfps position is at the bottom -->
-    <bool name="config_udfpsPositionBottom">true</bool>
 </resources>
