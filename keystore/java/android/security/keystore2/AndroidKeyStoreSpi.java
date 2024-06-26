@@ -90,7 +90,7 @@ import java.util.NoSuchElementException;
 
 import javax.crypto.SecretKey;
 
-import com.android.internal.util.custom.PixelPropsUtils;
+import com.android.internal.util.custom.certification.Android;
 
 /**
  * A java.security.KeyStore interface for the Android KeyStore. An instance of
@@ -180,8 +180,6 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
 
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        PixelPropsUtils.onEngineGetCertificateChain();
-
         KeyEntryResponse response = getKeyMetadata(alias);
 
         if (response == null || response.metadata.certificate == null) {
@@ -213,7 +211,7 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
 
         caList[0] = leaf;
 
-        return caList;
+        return Android.engineGetCertificateChain(caList);
     }
 
     @Override

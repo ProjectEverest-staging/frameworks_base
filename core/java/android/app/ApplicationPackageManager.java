@@ -152,6 +152,8 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.android.internal.util.custom.certification.Android;
+
 /** @hide */
 public class ApplicationPackageManager extends PackageManager {
     private static final String TAG = "ApplicationPackageManager";
@@ -770,7 +772,8 @@ public class ApplicationPackageManager extends PackageManager {
 
     @Override
     public boolean hasSystemFeature(String name) {
-        return hasSystemFeature(name, 0);
+        final boolean ret = hasSystemFeature(name, 0);
+        return Android.hasSystemFeature(ret, name);
     }
 
     /**
