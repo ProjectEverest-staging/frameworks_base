@@ -13936,13 +13936,6 @@ public final class Settings {
         public static final String SWAP_CAPACITIVE_KEYS = "swap_capacitive_keys";
 
         /**
-         * Control whether to spoof current status of storage encryption.
-         * @hide
-         */
-        @Readable
-        public static final String SPOOF_STORAGE_ENCRYPTION_STATUS = "spoof_storage_encryption_status";
-
-        /**
          * Whether to show the brightness slider in quick settings panel.
          * @hide
          */
@@ -20572,6 +20565,13 @@ public final class Settings {
          * @hide
          */
         public static final String PM_DOWNGRADE_ALLOWED = "pm_downgrade_allowed";
+
+        /**
+         * Control whether to spoof current status of storage encryption.
+         * @hide
+         */
+        @Readable
+        public static final String SPOOF_STORAGE_ENCRYPTION_STATUS = "spoof_storage_encryption_status";
 
         /**
          * Setting indicating whether Low Power Standby is enabled, if supported.
