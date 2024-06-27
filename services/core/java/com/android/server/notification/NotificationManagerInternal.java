@@ -73,7 +73,4 @@ public interface NotificationManagerInternal {
      * Otherwise an {@link IllegalStateException} will be thrown.
      */
     void setDeviceEffectsApplier(DeviceEffectsApplier applier);
-
-    void updateSecureNotifications(String pkg, boolean isContentSecure,
-        boolean isBubbleUpSuppressed, int userId);
 }
